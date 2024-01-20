@@ -2,8 +2,6 @@
 import {Button} from '@1goal/ui/button';
 import Image from 'next/image';
 
-export const runtime = "edge";
-
 export default async function HomePage() {
     // You can await this here if you don't want to show Suspense fallback below
     // const posts = api.post.all();

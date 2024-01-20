@@ -2,11 +2,8 @@ import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from '@libsql/client';
 
 import * as auth from "./schema/auth";
-import * as post from "./schema/post";
 
-export const schema = { ...auth, ...post };
-
-export { mySqlTable as tableCreator } from "./schema/_table";
+export const schema = { ...auth };
 
 export * from "drizzle-orm";
 

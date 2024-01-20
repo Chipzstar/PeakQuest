@@ -14,7 +14,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@1goal/auth": "workspace:^0.1.0",
     "@1goal/db": "workspace:^0.1.0",
     "@1goal/validators": "workspace:^0.1.0",
     "@trpc/server": "next",
