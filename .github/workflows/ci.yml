@@ -20,6 +20,8 @@ env:
 
 jobs:
   lint:
+    # Remove if condition to enable the job
+    if: github.repository == 'octo-org/octo-repo-prod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +37,8 @@ jobs:
         run: pnpm lint && pnpm lint:ws
 
   format:
+    # Remove if condition to enable the job
+    if: github.repository == 'octo-org/octo-repo-prod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +50,8 @@ jobs:
         run: pnpm format
 
   typecheck:
+    # Remove if condition to enable the job
+    if: github.repository == 'octo-org/octo-repo-prod'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { desc, eq, schema } from "@acme/db";
-import { CreatePostSchema } from "@acme/validators";
+import { desc, eq, schema } from "@1goal/db";
+import { CreatePostSchema } from "@1goal/validators";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 
