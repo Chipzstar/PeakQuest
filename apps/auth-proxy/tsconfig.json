@@ -1,4 +1,0 @@
-{
-  "extends": "@1goal/tsconfig/base.json",
-  "include": ["routes"]
-}
