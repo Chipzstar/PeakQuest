@@ -3,21 +3,11 @@ import * as dotenv from "dotenv";
 
 dotenv.config({ path: "../../.env" });
 
-const uri = [
-  "mysql://",
-  process.env.DB_USERNAME,
-  ":",
-  process.env.DB_PASSWORD,
-  "@",
-  process.env.DB_HOST,
-  ":3306/",
-  process.env.DB_NAME,
-  '?ssl={"rejectUnauthorized":true}',
-].join("");
-
 export default {
   schema: "./src/schema",
-  driver: "mysql2",
-  dbCredentials: { uri },
-  tablesFilter: ["t3turbo_*"],
+  driver: "turso",
+  dbCredentials: {
+    url: process.env.DATABASE_URL?? "libsql://smooth-judomaster-chipzstar.turso.io",
+    authToken: process.env.DATABASE_AUTH_TOKEN?? "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIyMDI0LTAxLTIwVDE3OjE0OjA5LjA2Nzk3MzU2MVoiLCJpZCI6IjIxNGQ3YTgwLWI3YjctMTFlZS1iMTg5LWE2MDMzNTNjNjBiMyJ9.swLbxQ_TFJcZcGJgB1KVf1I_tO9KjmpdLPLGVWnoykRH_TyDVU-01y-3JBzxQtTs3OwAH9Qw-8Vxoy3HaWwfDw"
+  }
 } satisfies Config;
