@@ -10,6 +10,8 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from 'zod';
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@1goal/ui/form";
+import {PATHS} from "~/app/utils";
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
     challenges: z
@@ -23,20 +25,15 @@ const FormSchema = z.object({
 })
 
 const Question4 = () => {
-    // const router = useRouter()
+    const router = useRouter()
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-            ),
-        })
+        console.log(data)
+        router.push(PATHS.QUESTION_5)
     }
 
 

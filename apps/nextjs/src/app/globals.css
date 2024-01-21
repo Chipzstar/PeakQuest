@@ -56,7 +56,7 @@
 
     .jumbo-checkbox {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
-        @apply sm:h-20 sm:w-20 rounded-md bg-white border-none
+        @apply sm:h-10 sm:w-10 rounded-md bg-white border-none
     }
 
     .jumbo-radio {
