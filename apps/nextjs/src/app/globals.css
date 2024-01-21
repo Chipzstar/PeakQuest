@@ -64,15 +64,20 @@
     }
     .jumbo-button {
         box-shadow: 0 7px 4px 0 rgba(0, 0, 0, 0.25);
-        @apply rounded-3xl h-16 w-144 text-2.5xl
+        @apply rounded-full h-20 w-144 text-2.5xl font-bold
     }
 
     .jumbo-radio-label {
-        @apply text-2xl font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+        @apply text-lg text-secondary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
     }
 
     .jumbo-radio-indicator {
         @apply sm:h-20 sm:w-20 fill-current text-current
+    }
+
+    .jumbo-select-trigger {
+        box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
+        @apply bg-white text-secondary pl-6 py-3 h-14 border-none rounded-2xl w-72 sm:w-144
     }
 }
 
