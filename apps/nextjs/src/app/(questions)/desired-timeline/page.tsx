@@ -64,10 +64,10 @@ const Question3 = () => {
                                     <SelectContent className="jumbo-select">
                                         <SelectItem value="1 month">1 month</SelectItem>
                                         <SelectItem value="3 months">3 months</SelectItem>
-                                        <SelectItem value="6 month">6 months</SelectItem>
+                                        <SelectItem value="6 months">6 months</SelectItem>
                                         <SelectItem value="9 months">9 months</SelectItem>
                                         <SelectItem value="12 months">12 months</SelectItem>
-                                        <SelectItem value="2 year">2 years</SelectItem>
+                                        <SelectItem value="2 years">2 years</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage/>
