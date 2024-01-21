@@ -13,7 +13,7 @@ export default function HomePage() {
     // const posts = api.post.all();
 
     return (
-        <main className="flex items-center justify-center h-screen py-16">
+        <main className="page-container">
             <div className="flex flex-col items-center justify-center gap-4 space-y-8">
                 <div className="pb-6">
                     <Image src="/images/hero.svg" alt="hero" width={400} height={350}/>
@@ -22,14 +22,14 @@ export default function HomePage() {
                     PeakQuest
                 </h1>
                 <p className="text-3xl text-secondary">Life is a marathon, not a sprint</p>
-                <Button size="lg" className="rounded-3xl h-16 w-144 shadow-xl" onClick={() => router.push(PATHS.QUESTION_1)}>
-                    <span className="text-2xl">Create your quest</span>
+                <Button size="lg" className="jumbo-button" onClick={() => router.push(PATHS.QUESTION_1)}>
+                    <span className="text-white">Create your quest</span>
                 </Button>
                 <div className="w-full max-w-2xl overflow-y-scroll">
                 </div>
             </div>
             <div className="absolute bottom-0 left-0">
-                <Image src="/images/mythical-animal-1.png" alt="mythical-beast-1" width={500} height={500}/>
+                <Image src="/images/mythical-animal-1.png" alt="mythical-beast-1" width={350} height={350}/>
             </div>
         </main>
     );
