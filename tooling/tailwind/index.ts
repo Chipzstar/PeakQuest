@@ -13,6 +13,9 @@ export default {
             },
         },
         extend: {
+            fontSize: {
+              '2.5xl': ['1.6875rem', { lineHeight: '2.125rem' }],
+            },
             width: {
                 128: '32rem',
                 144: '36rem',
