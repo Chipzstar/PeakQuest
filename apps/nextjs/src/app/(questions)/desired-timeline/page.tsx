@@ -61,7 +61,7 @@ const Question3 = () => {
                                             <SelectValue placeholder="1 month"/>
                                         </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="jumbo-select">
+                                    <SelectContent className="jumbo-select-content">
                                         <SelectItem value="1 month">1 month</SelectItem>
                                         <SelectItem value="3 months">3 months</SelectItem>
                                         <SelectItem value="6 months">6 months</SelectItem>
