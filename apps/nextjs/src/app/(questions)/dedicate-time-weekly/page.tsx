@@ -11,6 +11,7 @@ import * as z from 'zod';
 import {useRouter} from 'next/navigation';
 import {toast} from '@1goal/ui/toast';
 import {Checkbox} from "@1goal/ui/checkbox";
+import { PATHS } from '~/app/utils';
 
 const days = [
     {
@@ -50,7 +51,7 @@ const FormSchema = z.object({
 })
 
 const Question2 = () => {
-    // const router = useRouter()
+    const router = useRouter()
     const form = useForm<z.infer<typeof FormSchema>>({
         defaultValues: {
             days: []
@@ -66,6 +67,7 @@ const Question2 = () => {
         </pre>
             ),
         })
+        setTimeout(() => router.push(PATHS.CONFIRM), 2000)
     }
 
     return (
