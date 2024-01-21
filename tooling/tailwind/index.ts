@@ -78,6 +78,20 @@ export default {
                     900: '#304F46',
                     950: '#263E37'
                 },
+                progress: {
+                    DEFAULT: '#94A385',
+                    50: '#F0F2EE',
+                    100: '#E6E9E2',
+                    200: '#D1D8CB',
+                    300: '#BDC6B4',
+                    400: '#A8B59C',
+                    500: '#94A385',
+                    600: '#788967',
+                    700: '#5C694F',
+                    800: '#404937',
+                    900: '#24291F',
+                    950: '#161913'
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

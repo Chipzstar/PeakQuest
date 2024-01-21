@@ -1,9 +1,14 @@
+"use client"
+
 // import { api } from "~/trpc/server";
 import {Button} from "@1goal/ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { PATHS } from "./utils";
 
-export default async function HomePage() {
+export default function HomePage() {
+    const router = useRouter()
     // You can await this here if you don't want to show Suspense fallback below
     // const posts = api.post.all();
 
@@ -17,7 +22,7 @@ export default async function HomePage() {
                     PeakQuest
                 </h1>
                 <p className="text-3xl text-secondary">Life is a marathon, not a sprint</p>
-                <Button size="lg" className="rounded-3xl h-16 w-144 shadow-xl">
+                <Button size="lg" className="rounded-3xl h-16 w-144 shadow-xl" onClick={() => router.push(PATHS.QUESTION_1)}>
                     <span className="text-2xl">Create your quest</span>
                 </Button>
                 <div className="w-full max-w-2xl overflow-y-scroll">
