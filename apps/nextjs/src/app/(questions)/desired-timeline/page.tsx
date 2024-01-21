@@ -11,29 +11,25 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from 'zod';
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@1goal/ui/form";
 import { ChevronDown } from 'lucide-react';
-import {toast} from "@1goal/ui/toast";
+import {PATHS} from "~/app/utils";
 
 const FormSchema = z.object({
-    timeline: z.enum(["1 month", "3 months", "6 months", "9 months", "12 months", "18 months", "2 years"]),
+    timeline: z.enum(["1 month", "3 months", "6 months", "9 months", "12 months", "18 months", "2 years"]).default("1 month"),
 })
 
 const Question3 = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const router = useRouter()
 
     const form = useForm<z.infer<typeof FormSchema>>({
+        defaultValues: {
+            timeline: "1 month",
+        },
         resolver: zodResolver(FormSchema),
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-            ),
-        })
-        // router.push(PATHS.QUESTION_4)
+        console.log(data)
+        router.push(PATHS.QUESTION_4)
     }
 
     return (
@@ -46,7 +42,7 @@ const Question3 = () => {
                       className="flex flex-col items-center justify-center gap-4 space-y-10 z-20 sm:w-2/3">
                     <div className="flex flex-col space-y-2 items-center">
                         <Progress value={60} className="sm:w-96 h-7 rounded-3xl mb-8"/>
-                        <h1 className="text-xl sm:text-5xl text-center font-bold sm:leading-tight">
+                        <h1 className="text-2xl sm:text-5xl text-center font-bold sm:leading-tight">
                             What is your desired timeline for achieving this goal?
                         </h1>
                     </div>
@@ -78,7 +74,7 @@ const Question3 = () => {
                         <span className="text-white">Enter timeline</span>
                     </Button>
                     <span
-                        className="text-center text-stone-500">{"💡 What's your timeline - short-term or long-term? This helps set realistic steps."}</span>
+                        className="text-stone-500">{"💡 What's your timeline - short-term or long-term? This helps set realistic steps."}</span>
                 </form>
             </Form>
             <div className="absolute bottom-0 right-0">
