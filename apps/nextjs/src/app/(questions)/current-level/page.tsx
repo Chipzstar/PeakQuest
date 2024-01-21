@@ -9,10 +9,9 @@ import {useForm} from "react-hook-form"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@1goal/ui/form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from 'zod';
-import {toast} from "@1goal/ui/toast";
-import {Circle, Square} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {PATHS} from "~/app/utils";
+import { Square } from 'lucide-react';
 
 const FormSchema = z.object({
     level: z.enum(["beginner", "intermediate", "advanced"], {
@@ -27,13 +26,7 @@ const Question2 = () => {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        /*toast("You submitted the following values:", {
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-            ),
-        })*/
+        console.log(data)
         router.push(PATHS.QUESTION_3);
     }
 
