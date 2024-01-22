@@ -53,12 +53,10 @@
     .page-container {
         @apply flex items-center justify-center h-screen py-8 text-primary
     }
-
     .jumbo-checkbox {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
         @apply sm:h-10 sm:w-10 rounded-md bg-white border-none
     }
-
     .jumbo-radio {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
         @apply sm:h-20 sm:w-20 rounded-md bg-white border-none
@@ -67,7 +65,10 @@
         box-shadow: 0 7px 4px 0 rgba(0, 0, 0, 0.25);
         @apply rounded-full h-20 sm:w-160 sm:text-3xl font-bold
     }
-
+    .jumbo-textarea {
+        box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
+        @apply rounded-xl sm:text-xl sm:w-160 text-secondary placeholder:text-secondary/50 sm:placeholder:text-lg p-4
+    }
     .jumbo-radio-label {
         @apply text-lg text-secondary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
     }
@@ -75,7 +76,6 @@
     .jumbo-radio-indicator {
         @apply sm:h-20 sm:w-20 fill-current text-current
     }
-
     .jumbo-select-trigger {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
         @apply bg-white text-secondary pl-6 py-3 h-14 border-none rounded-2xl w-72 sm:w-144
@@ -83,6 +83,10 @@
     .jumbo-select-content {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
         @apply bg-white text-secondary border-none
+    }
+    .jumbo-input {
+        box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
+        @apply bg-white text-secondary border-none rounded-lg w-72 sm:w-144 pl-6 sm:h-14 sm:text-xl placeholder:text-secondary/50
     }
 }
 
