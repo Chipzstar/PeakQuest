@@ -26,6 +26,7 @@ export default {
             },
             backgroundImage: {
                 'mythical-beast': "url('/images/mythical-animal-watermark.svg')",
+                'mountain-watermark': "url('/images/mountain-watermark.png')",
             },
             colors: {
                 primary: {

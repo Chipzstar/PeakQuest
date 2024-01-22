@@ -1,32 +1,26 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import {Button} from "@1goal/ui/button";
 import {PATHS} from "~/app/utils";
 import {useRouter} from 'next/navigation';
-import * as z from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormMessage} from "@1goal/ui/form";
 import {useForm} from "react-hook-form";
 import {Input} from "@1goal/ui/input";
 import { Loader2 } from 'lucide-react';
 import { cn } from '@1goal/ui';
-
-const FormSchema = z.object({
-    name: z.string().min(5, {
-        message: "Must be at least 5 characters.",
-    }),
-    email: z.string().email("Please enter a valid email address."),
-})
+import {GettingStartedFormSchema} from "@1goal/validators";
+import {UserFormData} from "~/app/utils/types";
 
 const Confirm = () => {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    const form = useForm<UserFormData>({
+        resolver: zodResolver(GettingStartedFormSchema),
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
+    function onSubmit(data: UserFormData) {
         console.log(data)
         setLoading(true)
         setTimeout(() => {
@@ -35,12 +29,34 @@ const Confirm = () => {
         }, 2000)
     }
 
+    useEffect(() => {
+        const storedValue = window.localStorage.getItem('user');
+        if (storedValue) {
+            try {
+                const user = JSON.parse(window.localStorage.getItem('user')!) as UserFormData
+                form.setValue('name', user.name, { shouldValidate: false });
+                form.setValue('email', user.email, { shouldValidate: false });
+            } catch (e) {
+                console.log('Failed to parse stored value');
+            }
+        }
+    }, []);
+
+    // Callback version of watch.  It's your responsibility to unsubscribe when done.
+    useEffect(() => {
+        const subscription = form.watch((value, { name, type }) => {
+            console.log(value, name, type)
+            window.localStorage.setItem('user', JSON.stringify(value));
+        })
+        return () => subscription.unsubscribe();
+    }, [form.watch])
+
     return (
         <main className="page-container bg-mythical-beast">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
                       className="flex flex-col items-center justify-center gap-4 space-y-10">
-                    <h1 className="text-3xl text-zinc-600 sm:text-[5rem] font-bold">
+                    <h1 className="text-3xl text-zinc-600 sm:text-[5rem] font-bold sm:mb-8">
                         Conquer your PEAK QUEST
                     </h1>
                     <FormField
