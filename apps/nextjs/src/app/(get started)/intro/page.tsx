@@ -5,12 +5,15 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@1goal/ui/ca
 import { useLocalStorageValue } from '@react-hookz/web';
 import type {UserFormData} from "~/app/utils/types";
 import { useClickAnyWhere } from "usehooks-ts";
+import {useRouter} from 'next/navigation';
+import {PATHS} from "~/app/utils";
 
 const Intro = () => {
+    const router = useRouter()
     const user = useLocalStorageValue<UserFormData>('user');
 
     useClickAnyWhere(() => {
-
+        router.push(PATHS.QUEST)
     })
 
     return (
@@ -30,7 +33,7 @@ const Intro = () => {
                         <p>{"We're looking forward to helping you conquer your mountains and celebrate every victory along the way. Let’s embark on this exciting journey together!"}</p>
                     </CardContent>
                     <CardFooter>
-                        <p>Warm regards,<br/>PEAK QUEST TEAM</p>
+                        <span>Warm regards,<br/><span className="font-bold">PEAK QUEST TEAM</span></span>
                     </CardFooter>
                 </Card>
             </div>
