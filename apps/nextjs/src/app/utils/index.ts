@@ -5,5 +5,6 @@ export const PATHS = {
     QUESTION_3: '/desired-timeline',
     QUESTION_4: '/challenges-and-obstacles',
     QUESTION_5: '/dedicate-time-weekly',
-    CONFIRM: '/confirm', INTRO: "/intro"
+    CONFIRM: '/confirm', INTRO: "/intro",
+    QUEST: '/quest'
 }

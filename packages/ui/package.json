@@ -15,7 +15,8 @@
     "./textarea": "./src/textarea.tsx",
     "./checkbox": "./src/checkbox.tsx",
     "./radio-group": "./src/radio-group.tsx",
-    "./select": "./src/select.tsx"
+    "./select": "./src/select.tsx",
+    "./card": "./src/card.tsx"
   },
   "license": "MIT",
   "scripts": {

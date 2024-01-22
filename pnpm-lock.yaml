@@ -40,10 +40,10 @@ importers:
         version: 5.17.7(react@18.2.0)
       '@trpc/client':
         specifier: next
-        version: 11.0.0-next-beta.222(@trpc/server@11.0.0-next-beta.222)
+        version: 11.0.0-next-beta.228(@trpc/server@11.0.0-next-beta.228)
       '@trpc/react-query':
         specifier: next
-        version: 11.0.0-next-beta.222(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.222)(@trpc/server@11.0.0-next-beta.222)(react-dom@18.2.0)(react@18.2.0)
+        version: 11.0.0-next-beta.228(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.228)(@trpc/server@11.0.0-next-beta.228)(react-dom@18.2.0)(react@18.2.0)
       expo:
         specifier: ^49.0.21
         version: 49.0.21(@babel/core@7.23.7)
@@ -150,6 +150,9 @@ importers:
       '@1goal/validators':
         specifier: workspace:^0.1.0
         version: link:../../packages/validators
+      '@react-hookz/web':
+        specifier: ^24.0.2
+        version: 24.0.2(react-dom@18.2.0)(react@18.2.0)
       '@t3-oss/env-nextjs':
         specifier: ^0.7.1
         version: 0.7.1(typescript@5.3.3)(zod@3.22.4)
@@ -164,13 +167,13 @@ importers:
         version: 5.17.7(@tanstack/react-query@5.17.7)(next@14.0.4)(react@18.2.0)
       '@trpc/client':
         specifier: next
-        version: 11.0.0-next-beta.222(@trpc/server@11.0.0-next-beta.222)
+        version: 11.0.0-next-beta.228(@trpc/server@11.0.0-next-beta.228)
       '@trpc/react-query':
         specifier: next
-        version: 11.0.0-next-beta.222(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.222)(@trpc/server@11.0.0-next-beta.222)(react-dom@18.2.0)(react@18.2.0)
+        version: 11.0.0-next-beta.228(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.228)(@trpc/server@11.0.0-next-beta.228)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: next
-        version: 11.0.0-next-beta.222
+        version: 11.0.0-next-beta.228
       framer-motion:
         specifier: ^10.18.0
         version: 10.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -192,6 +195,9 @@ importers:
       superjson:
         specifier: 2.2.1
         version: 2.2.1
+      usehooks-ts:
+        specifier: ^2.9.5
+        version: 2.9.5(react-dom@18.2.0)(react@18.2.0)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -243,7 +249,7 @@ importers:
         version: link:../validators
       '@trpc/server':
         specifier: next
-        version: 11.0.0-next-beta.222
+        version: 11.0.0-next-beta.228
       superjson:
         specifier: 2.2.1
         version: 2.2.1
@@ -4139,6 +4145,26 @@ packages:
       '@babel/runtime': 7.23.8
     dev: false
 
+  /@react-hookz/deep-equal@1.0.4:
+    resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
+    dev: false
+
+  /@react-hookz/web@24.0.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-LhWw/LzhxKYRZDRIKd42mCMqRa9pTMSpwpwnfpa0hYoUNcrHw//3NlpoPlynkmKT3G88mumTTuV0HeWnNkarog==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      js-cookie: ^3.0.5
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
+    peerDependenciesMeta:
+      js-cookie:
+        optional: true
+    dependencies:
+      '@react-hookz/deep-equal': 1.0.4
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@react-native-community/cli-clean@12.3.0:
     resolution: {integrity: sha512-iAgLCOWYRGh9ukr+eVQnhkV/OqN3V2EGd/in33Ggn/Mj4uO6+oUncXFwB+yjlyaUNz6FfjudhIz09yYGSF+9sg==}
     dependencies:
@@ -4698,32 +4724,32 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
-  /@trpc/client@11.0.0-next-beta.222(@trpc/server@11.0.0-next-beta.222):
-    resolution: {integrity: sha512-PPeU1JjnrAGlmZg7zNBZ1Ywc4M8CoW1wMVKe59J7wPE1Kv6S7C7WDv+9NMF5ZNBqLiPESU0PUc/oLmxFDQRPkQ==}
+  /@trpc/client@11.0.0-next-beta.228(@trpc/server@11.0.0-next-beta.228):
+    resolution: {integrity: sha512-LM7vHbzJBzOs31nONUQV0Mdxsuz7YNt6KDe+5BnLDFS7qXcUcgVj6lpFgtglWEOEDBa02OHQYujyzrajvb3asA==}
     peerDependencies:
-      '@trpc/server': 11.0.0-next-beta.222+3c3fb2a38
+      '@trpc/server': 11.0.0-next-beta.228+38f3240e9
     dependencies:
-      '@trpc/server': 11.0.0-next-beta.222
+      '@trpc/server': 11.0.0-next-beta.228
     dev: false
 
-  /@trpc/react-query@11.0.0-next-beta.222(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.222)(@trpc/server@11.0.0-next-beta.222)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-9oJLu2LZd1exxUrbxGMy3XYHpLrYlWeDe5yAnkygdi4ZDnd9YenwM2I68XdMCWMXsZVeU/5Bck/XzdpBuaVh9A==}
+  /@trpc/react-query@11.0.0-next-beta.228(@tanstack/react-query@5.17.7)(@trpc/client@11.0.0-next-beta.228)(@trpc/server@11.0.0-next-beta.228)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-c50um14znXEU8WIx/oS6/GtO09OZj3F44KsliC55icS+ugU7z3VNXv79iYyVsulz/unkOvQLVeAkSBhSUfM+7g==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0
-      '@trpc/client': 11.0.0-next-beta.222+3c3fb2a38
-      '@trpc/server': 11.0.0-next-beta.222+3c3fb2a38
+      '@trpc/client': 11.0.0-next-beta.228+38f3240e9
+      '@trpc/server': 11.0.0-next-beta.228+38f3240e9
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
     dependencies:
       '@tanstack/react-query': 5.17.7(react@18.2.0)
-      '@trpc/client': 11.0.0-next-beta.222(@trpc/server@11.0.0-next-beta.222)
-      '@trpc/server': 11.0.0-next-beta.222
+      '@trpc/client': 11.0.0-next-beta.228(@trpc/server@11.0.0-next-beta.228)
+      '@trpc/server': 11.0.0-next-beta.228
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@trpc/server@11.0.0-next-beta.222:
-    resolution: {integrity: sha512-+JThZHMOrHhuJZyV42Jbzv4evGU5DXcK3hyzmFYGoaAfO6l4AJ7L6jnPdp0wDy9p+CcoppQaZ3+FwZc0gxtd0g==}
+  /@trpc/server@11.0.0-next-beta.228:
+    resolution: {integrity: sha512-8pRT1Ixrh8310KlPLLwlfEmfWXL9yrJK+mz9jFgvsiEtazR2N7rUFV8SoG2SWGxLkTaPc03o4k1JSf83XDwWRw==}
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -12873,6 +12899,17 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.2
+    dev: false
+
+  /usehooks-ts@2.9.5(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-M5LrjX9Wo4XRsof0zCCsq81x5+so/b89aUO53XPTjUehKAbOFhRq/DDRyv7qsRK4AEaJe1rhReFZqesPGnREhQ==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /util-deprecate@1.0.2:
