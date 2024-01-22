@@ -21,7 +21,7 @@ const Question1 = () => {
                     {'What is your "ONE" goal?'}
                 </h1>
                 <Textarea
-                    className="shadow-xl rounded-xl w-full"
+                    className="jumbo-textarea"
                     rows={4}
                     placeholder="Please be specific and clear"
                 />

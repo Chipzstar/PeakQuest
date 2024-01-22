@@ -5,7 +5,6 @@ import {Button} from "@1goal/ui/button";
 import Image from "next/image";
 import {Progress} from "@1goal/ui/progress";
 import {Textarea} from "@1goal/ui/textarea";
-import {toast} from '@1goal/ui/toast';
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from 'zod';
@@ -14,20 +13,23 @@ import {PATHS} from "~/app/utils";
 import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
-    challenges: z
+    challenges: z.union([z
         .string()
-        .min(10, {
+        .min(5, {
             message: "Must be at least 5 characters.",
         })
-        .max(160, {
+        .max(30, {
             message: "Must not be longer than 30 characters.",
-        }).optional(),
+        }), z.literal("")])
 })
 
 const Question4 = () => {
     const router = useRouter()
 
     const form = useForm<z.infer<typeof FormSchema>>({
+        defaultValues: {
+            challenges: "",
+        },
         resolver: zodResolver(FormSchema),
     })
 
@@ -58,7 +60,7 @@ const Question4 = () => {
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        className="shadow-xl rounded-xl sm:w-160"
+                                        className="jumbo-textarea"
                                         rows={6}
                                         {...field}
                                     />

@@ -24,6 +24,9 @@ export default {
                 192: '48rem',
                 208: '52rem',
             },
+            backgroundImage: {
+                'mythical-beast': "url('/images/mythical-animal-watermark.svg')",
+            },
             colors: {
                 primary: {
                     DEFAULT: '#10607A',
