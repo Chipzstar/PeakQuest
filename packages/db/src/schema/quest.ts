@@ -19,7 +19,9 @@ export const quest = sqliteTable("quest", {
   rawOpenAIResponse: text("raw_openai_response"),
   openAIResponse: text("openai_response"),
   isResponseValid: integer("is_response_valid", { mode: "boolean" }),
-  promptId: integer("prompt_id").notNull(),
+  promptId: integer("prompt_id")
+    .notNull()
+    .references(() => prompt.id),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
