@@ -23,3 +23,9 @@ export const quest = sqliteTable("quest", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+export const prompt = sqliteTable("prompt", {
+  id: integer("id").primaryKey(),
+  prompt: text("prompt").notNull(),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
