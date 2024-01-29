@@ -22,6 +22,7 @@ export const quest = sqliteTable("quest", {
   promptId: integer("prompt_id")
     .notNull()
     .references(() => prompt.id),
+  createdBy: text("created_by").notNull(),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });
