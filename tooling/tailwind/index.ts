@@ -25,8 +25,10 @@ export default {
                 208: '52rem',
             },
             backgroundImage: {
-                'mythical-beast': "url('/images/mythical-animal-watermark.svg')",
+                'mythical-beast': "url('/images/questions/mythical-animal-watermark.svg')",
                 'mountain-watermark': "url('/images/mountain-watermark.png')",
+                'mountain-quest': "url('/images/mountain-quest.png')",
+                'mountain-quest-mobile': "url('/images/mountain-quest-mobile.png')",
             },
             colors: {
                 primary: {

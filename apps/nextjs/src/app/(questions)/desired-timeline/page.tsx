@@ -78,7 +78,7 @@ const Question3 = () => {
                 </form>
             </Form>
             <div className="absolute bottom-0 right-0">
-                <Image src="/images/mythical-animal-4.png" alt="mythical-beast-1" width={400} height={350}/>
+                <Image src="/images/questions/mythical-animal-4.png" alt="mythical-beast-1" width={400} height={350}/>
             </div>
         </main>
     );

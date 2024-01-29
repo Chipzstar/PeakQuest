@@ -9,7 +9,6 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@1
 import {zodResolver} from "@hookform/resolvers/zod"
 import * as z from 'zod';
 import {useRouter} from 'next/navigation';
-import {toast} from '@1goal/ui/toast';
 import {Checkbox} from "@1goal/ui/checkbox";
 import { PATHS } from '~/app/utils';
 
@@ -130,7 +129,7 @@ const Question2 = () => {
                 </form>
             </Form>
             <div className="absolute bottom-0 right-0">
-                <Image src="/images/mythical-animal-6.png" alt="mythical-beast-1" width={450} height={350}/>
+                <Image src="/images/questions/mythical-animal-6.png" alt="mythical-beast-1" width={450} height={350}/>
             </div>
         </main>
     );

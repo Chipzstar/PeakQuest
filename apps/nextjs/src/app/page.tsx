@@ -29,7 +29,7 @@ export default function HomePage() {
                 </div>
             </div>
             <div className="absolute bottom-0 left-0">
-                <Image src="/images/mythical-animal-1.png" alt="mythical-beast-1" width={350} height={350}/>
+                <Image src="/images/questions/mythical-animal-1.png" alt="mythical-beast-1" width={350} height={350}/>
             </div>
         </main>
     );
