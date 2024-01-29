@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@1goal/ui/f
 import { PATHS } from "~/app/utils";
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai'
-import { challengesFacedAtom } from '~/app/lib/store';
+import { goalStateAtom } from '~/app/lib/store';
 
 const FormSchema = z.object({
     challenges: z.union([z
@@ -27,7 +27,7 @@ const FormSchema = z.object({
 
 const Question4 = () => {
     const router = useRouter()
-    const [challengesFaced, setChallengesFaced] = useAtom(challengesFacedAtom)
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
 
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -38,7 +38,7 @@ const Question4 = () => {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        setChallengesFaced(data.challenges)
+        setGoalState({ ...goalState, challengesFaced: data.challenges })
         router.push(PATHS.QUESTION_5)
     }
 

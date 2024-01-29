@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@1goal/ui/f
 import { ChevronDown } from 'lucide-react';
 import { PATHS } from "~/app/utils";
 import { useAtom } from 'jotai'
-import { timelineAtom } from '~/app/lib/store';
+import { goalStateAtom } from '~/app/lib/store';
 
 
 const FormSchema = z.object({
@@ -22,7 +22,7 @@ const FormSchema = z.object({
 
 const Question3 = () => {
     const router = useRouter()
-    const [timeline, setTimeLine] = useAtom(timelineAtom)
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
 
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -33,7 +33,7 @@ const Question3 = () => {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        setTimeLine(data.timeline)
+        setGoalState({ ...goalState, timeline: data.timeline })
         router.push(PATHS.QUESTION_4)
     }
 

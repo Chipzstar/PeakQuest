@@ -8,12 +8,12 @@ import { Textarea } from "@1goal/ui/textarea";
 import { useRouter } from 'next/navigation';
 import { PATHS } from "~/app/utils";
 import { useAtom } from 'jotai'
-import { oneGoalAtom } from '~/app/lib/store';
+import { goalStateAtom } from '~/app/lib/store';
 
 
 const Question1 = () => {
     const router = useRouter()
-    const [oneGoal, setOneGoal] = useAtom(oneGoalAtom)
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
 
     return (
         <main className="page-container">
@@ -26,11 +26,11 @@ const Question1 = () => {
                     {'What is your "ONE" goal?'}
                 </h1>
                 <Textarea
-                    value={oneGoal}
+                    value={goalState.oneGoal}
                     className="jumbo-textarea"
                     rows={4}
                     placeholder="Please be specific and clear"
-                    onChange={(e) => setOneGoal(e.target.value)}
+                    onChange={(e) => setGoalState({ ...goalState, oneGoal: e.target.value })}
                 />
                 <Button size="lg" className="jumbo-button" onClick={() => {
                     router.push(PATHS.QUESTION_2)

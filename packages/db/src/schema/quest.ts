@@ -1,7 +1,7 @@
 import { relations, sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-type GoalParams = {
+export type GoalParams = {
   currentLevel: string;
   timeline: string;
   challengesFaced: string;

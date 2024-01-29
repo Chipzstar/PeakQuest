@@ -1,7 +1,8 @@
 import { atom } from 'jotai'
+import type { GoalParams } from "node_modules/@1goal/db/src/schema/quest";
 
-export const oneGoalAtom = atom("")
-export const currentLevelAtom = atom("")
-export const timelineAtom = atom("")
-export const challengesFacedAtom = atom("")
-export const daysPerWeekAvailableAtom = atom(0)
+export type GoalState = GoalParams & {
+    oneGoal: string
+}
+
+export const goalStateAtom = atom<Partial<GoalState>>({})

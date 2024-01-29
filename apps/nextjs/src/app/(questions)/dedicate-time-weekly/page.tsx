@@ -13,7 +13,7 @@ import { toast } from '@1goal/ui/toast';
 import { Checkbox } from "@1goal/ui/checkbox";
 import { PATHS } from '~/app/utils';
 import { useAtom } from 'jotai'
-import { daysPerWeekAvailableAtom } from '~/app/lib/store';
+import { goalStateAtom } from '~/app/lib/store';
 
 const days = [
     {
@@ -54,7 +54,7 @@ const FormSchema = z.object({
 
 const Question2 = () => {
     const router = useRouter()
-    const [daysPerWeekAvailable, setDaysPerWeekAvailable] = useAtom(daysPerWeekAvailableAtom)
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
 
     const form = useForm<z.infer<typeof FormSchema>>({
         defaultValues: {
@@ -64,7 +64,7 @@ const Question2 = () => {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        setDaysPerWeekAvailable(data.days.length)
+        setGoalState({ ...goalState, daysPerWeekAvailable: data.days.length })
         setTimeout(() => router.push(PATHS.CONFIRM), 2000)
     }
 

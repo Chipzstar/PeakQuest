@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { PATHS } from "~/app/utils";
 import { Square } from 'lucide-react';
 import { useAtom } from 'jotai'
-import { currentLevelAtom } from '~/app/lib/store';
+import { goalStateAtom } from '~/app/lib/store';
 
 
 const FormSchema = z.object({
@@ -24,14 +24,14 @@ const FormSchema = z.object({
 
 const Question2 = () => {
     const router = useRouter()
-    const [currentLevel, setCurrentLevel] = useAtom(currentLevelAtom)
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        setCurrentLevel(data.level)
+        setGoalState({ ...goalState, currentLevel: data.level })
         router.push(PATHS.QUESTION_3);
     }
 
