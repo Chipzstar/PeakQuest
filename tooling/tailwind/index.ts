@@ -14,7 +14,7 @@ export default {
         },
         extend: {
             fontSize: {
-              '2.5xl': ['1.6875rem', { lineHeight: '2.125rem' }],
+                '2.5xl': ['1.6875rem', {lineHeight: '2.125rem'}],
             },
             width: {
                 128: '32rem',
@@ -100,6 +100,20 @@ export default {
                     800: '#404937',
                     900: '#24291F',
                     950: '#161913'
+                },
+                button: {
+                    DEFAULT: '#5A8684',
+                    50: '#C2D6D5',
+                    100: '#B6CECD',
+                    200: '#9DBDBC',
+                    300: '#85ADAB',
+                    400: '#6C9C9A',
+                    500: '#5A8684',
+                    600: '#436463',
+                    700: '#2D4342',
+                    800: '#162121',
+                    900: '#000000',
+                    950: '#000000'
                 },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

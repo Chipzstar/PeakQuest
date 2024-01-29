@@ -7,7 +7,8 @@ export const PATHS = {
     QUESTION_5: '/dedicate-time-weekly',
     CONFIRM: '/confirm',
     INTRO: "/intro",
-    QUEST: '/quest'
+    QUEST: '/quest',
+    SELECT_PLAYER: '/select-player'
 }
 
 export const MONSTERS = [

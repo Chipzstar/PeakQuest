@@ -1,4 +1,5 @@
-import React, {CSSProperties, FC} from 'react';
+import type {CSSProperties, FC} from 'react';
+import React from 'react';
 
 interface Props {
     src: string;

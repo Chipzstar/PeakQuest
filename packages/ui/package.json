@@ -16,7 +16,8 @@
     "./checkbox": "./src/checkbox.tsx",
     "./radio-group": "./src/radio-group.tsx",
     "./select": "./src/select.tsx",
-    "./card": "./src/card.tsx"
+    "./card": "./src/card.tsx",
+    "./tooltip": "./src/tooltip.tsx"
   },
   "license": "MIT",
   "scripts": {
@@ -36,6 +37,7 @@
     "@radix-ui/react-radio-group": "^1.1.3",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "class-variance-authority": "^0.7.0",
     "next-themes": "^0.2.1",
     "react-hook-form": "^7.49.3",
