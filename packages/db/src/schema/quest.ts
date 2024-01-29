@@ -30,5 +30,6 @@ export const quest = sqliteTable("quest", {
 export const prompt = sqliteTable("prompt", {
   id: integer("id").primaryKey(),
   prompt: text("prompt").notNull(),
+  variables: text("variables", { mode: "json" }),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
