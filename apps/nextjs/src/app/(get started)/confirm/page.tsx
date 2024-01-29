@@ -1,32 +1,38 @@
 "use client"
 
-import React, {useEffect, useState } from 'react';
-import {Button} from "@1goal/ui/button";
-import {PATHS} from "~/app/utils";
-import {useRouter} from 'next/navigation';
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormField, FormItem, FormMessage} from "@1goal/ui/form";
-import {useForm} from "react-hook-form";
-import {Input} from "@1goal/ui/input";
+import React, { useEffect, useState } from 'react';
+import { Button } from "@1goal/ui/button";
+import { PATHS } from "~/app/utils";
+import { useRouter } from 'next/navigation';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@1goal/ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "@1goal/ui/input";
 import { Loader2 } from 'lucide-react';
 import { cn } from '@1goal/ui';
-import {GettingStartedFormSchema} from "@1goal/validators";
-import type {UserFormData} from "~/app/utils/types";
+import { GettingStartedFormSchema } from "@1goal/validators";
+import type { UserFormData } from "~/app/utils/types";
+import { saveGoal } from '~/actions/save-goal';
+import { useAtom } from 'jotai'
+import { GoalState, goalStateAtom } from '~/app/lib/store';
+
 
 const Confirm = () => {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
+    const [goalState, setGoalState] = useAtom(goalStateAtom)
+
     const form = useForm<UserFormData>({
         resolver: zodResolver(GettingStartedFormSchema),
     })
 
-    function onSubmit(data: UserFormData) {
+    async function onSubmit(data: UserFormData) {
         console.log(data)
         setLoading(true)
-        setTimeout(() => {
+        saveGoal({ ...goalState as GoalState }).then(() => {
             router.push(PATHS.INTRO)
             setLoading(false)
-        }, 2000)
+        })
     }
 
     useEffect(() => {
@@ -55,7 +61,7 @@ const Confirm = () => {
         <main className="page-container bg-mythical-beast">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
-                      className="flex flex-col items-center justify-center gap-4 space-y-10">
+                    className="flex flex-col items-center justify-center gap-4 space-y-10">
                     <h1 className="text-3xl text-zinc-600 sm:text-[5rem] font-bold sm:mb-8">
                         Conquer your PEAK QUEST
                     </h1>
@@ -65,7 +71,7 @@ const Confirm = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input placeholder="First name" {...field} className="jumbo-input"/>
+                                    <Input placeholder="First name" {...field} className="jumbo-input" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -77,7 +83,7 @@ const Confirm = () => {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input placeholder="Email Address" {...field} className="jumbo-input"/>
+                                    <Input placeholder="Email Address" {...field} className="jumbo-input" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
