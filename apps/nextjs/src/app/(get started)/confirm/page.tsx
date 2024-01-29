@@ -11,7 +11,7 @@ import {Input} from "@1goal/ui/input";
 import { Loader2 } from 'lucide-react';
 import { cn } from '@1goal/ui';
 import {GettingStartedFormSchema} from "@1goal/validators";
-import {UserFormData} from "~/app/utils/types";
+import type {UserFormData} from "~/app/utils/types";
 
 const Confirm = () => {
     const router = useRouter()
