@@ -1,16 +1,19 @@
 "use client"
 
 import React from 'react';
-import {Button} from "@1goal/ui/button";
+import { Button } from "@1goal/ui/button";
 import Image from "next/image";
-import {Progress} from "@1goal/ui/progress";
-import {useForm} from "react-hook-form"
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@1goal/ui/form";
-import {zodResolver} from "@hookform/resolvers/zod"
+import { Progress } from "@1goal/ui/progress";
+import { useForm } from "react-hook-form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@1goal/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from 'zod';
-import {useRouter} from 'next/navigation';
-import {Checkbox} from "@1goal/ui/checkbox";
+import { useRouter } from 'next/navigation';
+import { toast } from '@1goal/ui/toast';
+import { Checkbox } from "@1goal/ui/checkbox";
 import { PATHS } from '~/app/utils';
+import { useAtom } from 'jotai'
+import { daysPerWeekAvailableAtom } from '~/app/lib/store';
 
 const days = [
     {
@@ -51,6 +54,8 @@ const FormSchema = z.object({
 
 const Question2 = () => {
     const router = useRouter()
+    const [daysPerWeekAvailable, setDaysPerWeekAvailable] = useAtom(daysPerWeekAvailableAtom)
+
     const form = useForm<z.infer<typeof FormSchema>>({
         defaultValues: {
             days: []
@@ -59,20 +64,20 @@ const Question2 = () => {
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log(data)
+        setDaysPerWeekAvailable(data.days.length)
         setTimeout(() => router.push(PATHS.CONFIRM), 2000)
     }
 
     return (
         <main className="page-container">
             <div className="absolute left-0 top-0 p-4">
-                <Image src="/images/logo-art.svg" alt="logo-art" width={500} height={500}/>
+                <Image src="/images/logo-art.svg" alt="logo-art" width={500} height={500} />
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
-                      className="flex flex-col items-center justify-center gap-4 space-y-10 z-20 sm:w-2/3">
+                    className="flex flex-col items-center justify-center gap-4 space-y-10 z-20 sm:w-2/3">
                     <div className="flex flex-col space-y-2 items-center">
-                        <Progress value={100} className="sm:w-96 h-7 rounded-3xl mb-8"/>
+                        <Progress value={100} className="sm:w-96 h-7 rounded-3xl mb-8" />
                         <h1 className="text-xl sm:text-5xl text-center font-bold sm:leading-tight">
                             How much time can you dedicate weekly to work towards this goal?
                         </h1>
@@ -88,36 +93,36 @@ const Question2 = () => {
                                             key={item.value}
                                             control={form.control}
                                             name="days"
-                                            render={({field}) => (
-                                                    <FormItem
-                                                        key={item.value}
-                                                        className="flex flex-col items-center justify-center space-y-6"
-                                                    >
-                                                        <FormControl>
-                                                            <Checkbox
-                                                                indicatorClassName="h-4 w-4 sm:h-6 sm:w-6"
-                                                                className="jumbo-checkbox"
-                                                                checked={field.value?.includes(item.value)}
-                                                                onCheckedChange={(checked) => {
-                                                                    return checked
-                                                                        ? field.onChange([...field.value, item.value])
-                                                                        : field.onChange(
-                                                                            field.value?.filter(
-                                                                                (value) => value !== item.value
-                                                                            )
+                                            render={({ field }) => (
+                                                <FormItem
+                                                    key={item.value}
+                                                    className="flex flex-col items-center justify-center space-y-6"
+                                                >
+                                                    <FormControl>
+                                                        <Checkbox
+                                                            indicatorClassName="h-4 w-4 sm:h-6 sm:w-6"
+                                                            className="jumbo-checkbox"
+                                                            checked={field.value?.includes(item.value)}
+                                                            onCheckedChange={(checked) => {
+                                                                return checked
+                                                                    ? field.onChange([...field.value, item.value])
+                                                                    : field.onChange(
+                                                                        field.value?.filter(
+                                                                            (value) => value !== item.value
                                                                         )
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                        <FormLabel className="text-secondary">
-                                                            {item.label}
-                                                        </FormLabel>
-                                                    </FormItem>
-                                                )}
+                                                                    )
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                    <FormLabel className="text-secondary">
+                                                        {item.label}
+                                                    </FormLabel>
+                                                </FormItem>
+                                            )}
                                         />
                                     ))}
                                 </div>
-                                <FormMessage/>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -129,7 +134,7 @@ const Question2 = () => {
                 </form>
             </Form>
             <div className="absolute bottom-0 right-0">
-                <Image src="/images/questions/mythical-animal-6.png" alt="mythical-beast-1" width={450} height={350}/>
+                <Image src="/images/questions/mythical-animal-6.png" alt="mythical-beast-1" width={450} height={350} />
             </div>
         </main>
     );

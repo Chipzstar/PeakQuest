@@ -1,17 +1,20 @@
 "use client"
 
 import React from 'react';
-import {Button} from "@1goal/ui/button";
+import { Button } from "@1goal/ui/button";
 import Image from "next/image";
-import {Progress} from "@1goal/ui/progress";
-import {RadioGroup, RadioGroupItem} from "@1goal/ui/radio-group";
-import {useForm} from "react-hook-form"
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@1goal/ui/form";
-import {zodResolver} from "@hookform/resolvers/zod"
+import { Progress } from "@1goal/ui/progress";
+import { RadioGroup, RadioGroupItem } from "@1goal/ui/radio-group";
+import { useForm } from "react-hook-form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@1goal/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
-import {PATHS} from "~/app/utils";
+import { PATHS } from "~/app/utils";
 import { Square } from 'lucide-react';
+import { useAtom } from 'jotai'
+import { currentLevelAtom } from '~/app/lib/store';
+
 
 const FormSchema = z.object({
     level: z.enum(["beginner", "intermediate", "advanced"], {
@@ -21,25 +24,28 @@ const FormSchema = z.object({
 
 const Question2 = () => {
     const router = useRouter()
+    const [currentLevel, setCurrentLevel] = useAtom(currentLevelAtom)
+
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log(data)
+        setCurrentLevel(data.level)
         router.push(PATHS.QUESTION_3);
     }
+
 
     return (
         <main className="page-container">
             <div className="absolute right-0 top-0 p-4">
-                <Image src="/images/logo-art.svg" alt="logo-art" width={500} height={500}/>
+                <Image src="/images/logo-art.svg" alt="logo-art" width={500} height={500} />
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
-                      className="flex flex-col items-center justify-center gap-4 space-y-6 z-20 sm:w-2/3">
+                    className="flex flex-col items-center justify-center gap-4 space-y-6 z-20 sm:w-2/3">
                     <div className="flex flex-col space-y-2 items-center">
-                        <Progress value={40} className="sm:w-96 h-7 rounded-3xl mb-8"/>
+                        <Progress value={40} className="sm:w-96 h-7 rounded-3xl mb-8" />
                         <h1 className="text-xl sm:text-5xl text-center font-bold sm:leading-tight">
                             How would you select your current level in relation to your goal?
                         </h1>
@@ -47,7 +53,7 @@ const Question2 = () => {
                     <FormField
                         name="level"
                         control={form.control}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <FormItem className="space-y-3">
                                 <FormControl>
                                     <RadioGroup
@@ -60,7 +66,7 @@ const Question2 = () => {
                                                     value="beginner"
                                                     id="beginner"
                                                     className="jumbo-radio"
-                                                    indicator={<Square className="jumbo-radio-indicator"/>}
+                                                    indicator={<Square className="jumbo-radio-indicator" />}
                                                 />
                                             </FormControl>
                                             <FormLabel
@@ -75,7 +81,7 @@ const Question2 = () => {
                                                     value="intermediate"
                                                     id="intermediate"
                                                     className="jumbo-radio"
-                                                    indicator={<Square className="jumbo-radio-indicator"/>}/>
+                                                    indicator={<Square className="jumbo-radio-indicator" />} />
                                             </FormControl>
                                             <FormLabel
                                                 className="jumbo-radio-label"
@@ -89,7 +95,7 @@ const Question2 = () => {
                                                     value="advanced"
                                                     id="advanced"
                                                     className="jumbo-radio"
-                                                    indicator={<Square className="jumbo-radio-indicator"/>}/>
+                                                    indicator={<Square className="jumbo-radio-indicator" />} />
                                             </FormControl>
                                             <FormLabel
                                                 className="jumbo-radio-label"
@@ -99,7 +105,7 @@ const Question2 = () => {
                                         </FormItem>
                                     </RadioGroup>
                                 </FormControl>
-                                <FormMessage/>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -111,7 +117,7 @@ const Question2 = () => {
                 </form>
             </Form>
             <div className="absolute bottom-0 left-0">
-                <Image src="/images/questions/mythical-animal-3.png" alt="mythical-beast-1" width={350} height={350}/>
+                <Image src="/images/questions/mythical-animal-3.png" alt="mythical-beast-1" width={350} height={350} />
             </div>
         </main>
     );
