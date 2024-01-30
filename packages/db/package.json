@@ -12,6 +12,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
     "generate": "drizzle-kit generate:sqlite --out ./migrations --breakpoints --schema=./src/schema/quest.ts --schema=./src/schema/auth.ts",
+    "push": "drizzle-kit push:sqlite",
     "migrate": "tsx migrate",
     "seed": "tsx seed",
     "studio": "drizzle-kit studio",

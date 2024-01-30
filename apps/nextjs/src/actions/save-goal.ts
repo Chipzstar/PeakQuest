@@ -1,23 +1,30 @@
 "use server"
 
-import type { GoalState } from "~/app/lib/store"
-import { v4 as uuidv4 } from 'uuid';
-import { db } from "@1goal/db"
-import { quest } from "node_modules/@1goal/db/src/schema/quest"
+import type {GoalState} from "~/app/lib/store"
+import {v4 as uuidv4} from 'uuid';
+import {db, quest} from "@1goal/db"
 
-export async function saveGoal(data: GoalState) {
+type Quest = typeof quest.$inferInsert;
+
+export async function saveGoal(data: GoalState): Promise<Quest> {
     // TODO: Save user info too
+    try {
+        const {oneGoal, ...goalParams } = data;
+        const id = uuidv4();
+        const result = await db.insert(quest).values({
+            id,
+            createdBy: "",
+            goal: oneGoal!,
+            goalParams: goalParams,
+            promptId: 1,
+            isResponseValid: false,
+            rawOpenAIResponse: "",
+            openAIResponse: ""
+        })
 
-    const goalParams = data
-    delete goalParams.oneGoal
-
-    await db.insert(quest).values({
-        id: uuidv4(),
-        createdBy: "",
-        goal: data.oneGoal as string,
-        goalParams: goalParams,
-        promptId: 1,
-        isResponseValid: false
-    })
-
+        return result.toJSON() as Quest
+    } catch (err) {
+        console.error(err)
+        throw err
+    }
 }

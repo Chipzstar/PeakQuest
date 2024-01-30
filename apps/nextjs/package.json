@@ -11,7 +11,8 @@
     "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
     "start": "pnpm with-env next start",
     "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "with-env": "dotenv -e ../../.env --",
+    "dopper:sync-env": "doppler secrets download --no-file --format env > ../../.env.doppler"
   },
   "dependencies": {
     "@1goal/api": "workspace:^0.1.0",

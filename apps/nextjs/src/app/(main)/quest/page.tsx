@@ -6,7 +6,6 @@ import Monster from "~/app/components/Monster";
 import {Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger} from "@1goal/ui/tooltip";
 import {useRouter, useSearchParams} from 'next/navigation';
 import Image from 'next/image';
-// import { useLocalStorageValue } from '@react-hookz/web';
 
 // TODO: Adapt Quest page to use canvas API using KonvaJS
 const Quest = () => {

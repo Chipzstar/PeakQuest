@@ -12,9 +12,7 @@ const Intro = () => {
     const router = useRouter()
     const user = useLocalStorageValue<UserFormData>('user');
 
-    useClickAnyWhere(() => {
-        router.push(PATHS.QUEST)
-    })
+    useClickAnyWhere(() => router.push(PATHS.QUEST))
 
     return (
         <main className="page-container bg-mountain-watermark bg-center">

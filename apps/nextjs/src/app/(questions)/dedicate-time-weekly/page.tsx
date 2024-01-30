@@ -9,7 +9,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
-import { toast } from '@1goal/ui/toast';
 import { Checkbox } from "@1goal/ui/checkbox";
 import { PATHS } from '~/app/utils';
 import { useAtom } from 'jotai'
@@ -65,7 +64,7 @@ const Question2 = () => {
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
         setGoalState({ ...goalState, daysPerWeekAvailable: data.days.length })
-        setTimeout(() => router.push(PATHS.CONFIRM), 2000)
+        router.push(PATHS.CONFIRM)
     }
 
     return (

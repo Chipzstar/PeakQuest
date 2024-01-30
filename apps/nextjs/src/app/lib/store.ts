@@ -1,7 +1,7 @@
 import { atom } from 'jotai'
-import type { GoalParams } from "node_modules/@1goal/db/src/schema/quest";
+import type { GoalParams } from "@1goal/db";
 
-export type GoalState = GoalParams & {
+export interface GoalState extends GoalParams {
     oneGoal?: string
 }
 
