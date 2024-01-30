@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "generate": "drizzle-kit generate:sqlite --out ./migrations --breakpoints --schema=./src/schema/quest.ts --schema=./src/schema/auth.ts",
     "migrate": "tsx migrate",
+    "seed": "tsx seed",
     "studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit"
   },
