@@ -33,3 +33,10 @@ export const prompt = sqliteTable("prompt", {
   variables: text("variables", { mode: "json" }),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
 });
+
+
+export const character = sqliteTable("character", {
+  id: integer("id").primaryKey(),
+  name: text("name").notNull(),
+  path: text("path").notNull()
+})
