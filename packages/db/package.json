@@ -11,7 +11,8 @@
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
-    "push": "drizzle-kit push:sqlite",
+    "generate": "drizzle-kit generate:sqlite --out ./migrations --breakpoints --schema=./src/schema/quest.ts --schema=./src/schema/auth.ts",
+    "migrate": "tsx drizzle/migrate",
     "studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit"
   },
