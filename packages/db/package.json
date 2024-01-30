@@ -12,7 +12,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint .",
     "generate": "drizzle-kit generate:sqlite --out ./migrations --breakpoints --schema=./src/schema/quest.ts --schema=./src/schema/auth.ts",
-    "migrate": "tsx drizzle/migrate",
+    "migrate": "tsx migrate",
     "studio": "drizzle-kit studio",
     "typecheck": "tsc --noEmit"
   },
@@ -28,6 +28,7 @@
     "drizzle-kit": "^0.20.10",
     "eslint": "^8.56.0",
     "prettier": "^3.1.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
   "eslintConfig": {
