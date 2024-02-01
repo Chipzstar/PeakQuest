@@ -10,7 +10,7 @@ import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { db } from "@1goal/db";
+import { db } from "@peakquest/db";
 
 /**
  * 1. CONTEXT

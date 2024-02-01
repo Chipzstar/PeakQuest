@@ -1,9 +1,13 @@
 import type {Config} from "tailwindcss";
 import animate from "tailwindcss-animate";
+import {nextui} from "@nextui-org/react";
 
 export default {
     darkMode: ["class"],
-    content: ["src/**/*.{ts,tsx}"],
+    content: [
+        "src/**/*.{ts,tsx}",
+        "../../node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+    ],
     theme: {
         container: {
             center: true,
@@ -17,6 +21,22 @@ export default {
                 '2.5xl': ['1.6875rem', {lineHeight: '2.125rem'}],
             },
             width: {
+                128: '32rem',
+                144: '36rem',
+                160: '40rem',
+                176: '44rem',
+                192: '48rem',
+                208: '52rem',
+            },
+            height: {
+                128: '32rem',
+                144: '36rem',
+                160: '40rem',
+                176: '44rem',
+                192: '48rem',
+                208: '52rem',
+            },
+            maxWidth: {
                 128: '32rem',
                 144: '36rem',
                 160: '40rem',
@@ -173,5 +193,5 @@ export default {
             },
         },
     },
-    plugins: [animate],
+    plugins: [animate, nextui()],
 } satisfies Config;

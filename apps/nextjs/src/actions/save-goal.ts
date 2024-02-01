@@ -2,7 +2,7 @@
 
 import type {GoalState} from "~/app/lib/store"
 import {v4 as uuidv4} from 'uuid';
-import {db, quest} from "@1goal/db"
+import {db, quest} from "@peakquest/db"
 
 type Quest = typeof quest.$inferInsert;
 

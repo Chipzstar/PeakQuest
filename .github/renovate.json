@@ -3,7 +3,7 @@
   "extends": ["config:base"],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@1goal/"],
+      "matchPackagePatterns": ["^@peakquest/"],
       "enabled": false
     }
   ],

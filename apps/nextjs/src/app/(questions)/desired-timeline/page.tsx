@@ -1,19 +1,22 @@
 "use client"
 
 import React from 'react';
-import { Button } from "@1goal/ui/button";
-import Image from "next/image";
-import { Progress } from "@1goal/ui/progress";
+import { Button } from "@peakquest/ui/button";
+import NextImage from "next/image";
+import { Progress } from "@peakquest/ui/progress";
 import { useRouter } from 'next/navigation';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@1goal/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@peakquest/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@1goal/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@peakquest/ui/form";
 import { ChevronDown } from 'lucide-react';
 import { PATHS } from "~/app/utils";
 import { useAtom } from 'jotai'
 import { goalStateAtom } from '~/app/lib/store';
+import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import LogoArt from "~/app/assets/images/logo-art.svg";
+import MythicalBeast4 from "~/app/assets/images/questions/mythical-animal-4.png";
 
 
 const FormSchema = z.object({
@@ -39,15 +42,24 @@ const Question3 = () => {
 
     return (
         <main className="page-container">
-            <div className="absolute left-0 top-0 p-4">
-                <Image src="/images/logo-art.svg" alt="logo-art" width={500} height={500} />
+            <div className="flex self-start md:absolute left-0 top-0 p-4">
+                <NextImage
+                    src={LogoArt as StaticImport}
+                    alt="hero"
+                    sizes="(max-width: 480px) 20vw, (max-width: 768px) 200vw, 150vw"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "contain",
+                    }}
+                />
             </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
-                    className="flex flex-col items-center justify-center gap-4 space-y-10 z-20 sm:w-2/3">
+                    className="flex flex-col items-center justify-center gap-4 space-y-10 z-20 px-6">
                     <div className="flex flex-col space-y-2 items-center">
-                        <Progress value={60} className="sm:w-96 h-7 rounded-3xl mb-8" />
-                        <h1 className="text-2xl sm:text-5xl text-center font-bold sm:leading-tight">
+                        <Progress value={60} className="w-2/3 sm:w-96 sm:h-7 rounded-3xl mb-8" />
+                        <h1 className="question-title sm:leading-tight lg:w-2/3">
                             What is your desired timeline for achieving this goal?
                         </h1>
                     </div>
@@ -58,7 +70,7 @@ const Question3 = () => {
                             <FormItem>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger className="w-[180px] jumbo-select-trigger" icon={<ChevronDown className="h-7 w-7 opacity-50" />}>
+                                        <SelectTrigger className="jumbo-select-trigger" icon={<ChevronDown className="h-7 w-7 opacity-50" />}>
                                             <SelectValue placeholder="1 month" />
                                         </SelectTrigger>
                                     </FormControl>
@@ -79,11 +91,20 @@ const Question3 = () => {
                         <span className="text-white">Enter timeline</span>
                     </Button>
                     <span
-                        className="text-stone-500">{"💡 What's your timeline - short-term or long-term? This helps set realistic steps."}</span>
+                        className="question-hint">{"💡 What's your timeline - short-term or long-term? This helps set realistic steps."}</span>
                 </form>
             </Form>
             <div className="absolute bottom-0 right-0">
-                <Image src="/images/questions/mythical-animal-4.png" alt="mythical-beast-1" width={400} height={350} />
+                <NextImage
+                    src={MythicalBeast4}
+                    alt="mythical-beast-4"
+                    sizes="(max-width: 480px) 60vw, (max-width: 768px) 125vw, 175vw"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "contain",
+                    }}
+                />
             </div>
         </main>
     );

@@ -1,4 +1,4 @@
-import {GettingStartedFormSchema} from "@1goal/validators";
+import {GettingStartedFormSchema} from "@peakquest/validators";
 import * as z from "zod";
 
 export type UserFormData = z.infer<typeof GettingStartedFormSchema>

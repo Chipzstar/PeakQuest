@@ -7,15 +7,18 @@ const config = {
 
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
-    "@1goal/api",
-    "@1goal/db",
-    "@1goal/ui",
-    "@1goal/validators",
+    "@peakquest/api",
+    "@peakquest/db",
+    "@peakquest/ui",
+    "@peakquest/validators",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+  images: {
+    dangerouslyAllowSVG: true
+  }
 };
 
 export default config;

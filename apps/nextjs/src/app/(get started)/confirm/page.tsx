@@ -1,22 +1,22 @@
 "use client"
 
 import React, {useEffect, useState} from 'react';
-import {Button} from "@1goal/ui/button";
+import {Button} from "@peakquest/ui/button";
 import {PATHS} from "~/app/utils";
 import {useRouter} from 'next/navigation';
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormField, FormItem, FormMessage} from "@1goal/ui/form";
+import {Form, FormControl, FormField, FormItem, FormMessage} from "@peakquest/ui/form";
 import {useForm} from "react-hook-form";
-import {Input} from "@1goal/ui/input";
+import {Input} from "@peakquest/ui/input";
 import {Loader2} from 'lucide-react';
-import {cn} from '@1goal/ui';
-import {GettingStartedFormSchema} from "@1goal/validators";
+import {cn} from '@peakquest/ui';
+import {GettingStartedFormSchema} from "@peakquest/validators";
 import type {UserFormData} from "~/app/utils/types";
 import {saveGoal} from '~/actions/save-goal';
 import {useAtom} from 'jotai'
 import type {GoalState} from '~/app/lib/store';
 import {goalStateAtom} from '~/app/lib/store';
-import {toast} from '@1goal/ui/toast';
+import {toast} from '@peakquest/ui/toast';
 
 const Confirm = () => {
     const router = useRouter()
@@ -67,11 +67,11 @@ const Confirm = () => {
     }, [form.watch])
 
     return (
-        <main className="page-container bg-mythical-beast">
+        <main className="page-container justify-center bg-center bg-cover bg-no-repeat bg-mythical-beast">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
                       className="flex flex-col items-center justify-center gap-4 space-y-10">
-                    <h1 className="text-3xl text-zinc-600 sm:text-[5rem] font-bold sm:mb-8">
+                    <h1 className="text-4xl md:text-5xl lg:text-8xl text-zinc-600 text-center font-bold sm:mb-8">
                         Conquer your PEAK QUEST
                     </h1>
                     <FormField
@@ -104,7 +104,7 @@ const Confirm = () => {
                         })}/>
                         <span className="text-white">Get Started</span>
                     </Button>
-                    <p className="text-4xl text-zinc-600 font-bold">Life is a marathon, not a sprint</p>
+                    <p className="text-xl md:text-4xl text-zinc-600 font-bold">Life is a marathon, not a sprint</p>
                 </form>
             </Form>
         </main>
