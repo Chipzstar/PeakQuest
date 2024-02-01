@@ -6,7 +6,7 @@ import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@1goal/api";
+import type { AppRouter } from "@peakquest/api";
 
 export const api = createTRPCReact<AppRouter>();
 

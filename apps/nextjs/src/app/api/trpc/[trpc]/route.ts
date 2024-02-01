@@ -1,6 +1,6 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
-import { appRouter, createTRPCContext } from "@1goal/api";
+import { appRouter, createTRPCContext } from "@peakquest/api";
 import { NextRequest } from "next/server";
 
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import Character from "~/app/components/Character";
 import type {CharacterData} from "~/app/utils/types";
-import {Button} from "@1goal/ui/button";
+import {Button} from "@peakquest/ui/button";
 import { useRouter } from 'next/navigation';
 import { useLocalStorageValue } from '@react-hookz/web';
 

@@ -1,12 +1,12 @@
-import { relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export type GoalParams = {
+export interface GoalParams {
   currentLevel: string;
   timeline: string;
   challengesFaced: string;
   daysPerWeekAvailable: number;
-};
+}
 
 export const quest = sqliteTable("quest", {
   id: text("id").primaryKey(),

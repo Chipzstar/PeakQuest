@@ -1,5 +1,5 @@
 {
-  "name": "@1goal/tsconfig",
+  "name": "@peakquest/tsconfig",
   "private": true,
   "version": "0.1.0",
   "files": [

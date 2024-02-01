@@ -4,7 +4,7 @@
  */
 import type { Config } from "tailwindcss";
 
-import baseConfig from "@1goal/tailwind-config";
+import baseConfig from "@peakquest/tailwind-config";
 
 export default {
   content: ["./src/**/*.tsx"],

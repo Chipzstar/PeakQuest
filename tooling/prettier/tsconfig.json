@@ -1,5 +1,5 @@
 {
-  "extends": "@1goal/tsconfig/base.json",
+  "extends": "@peakquest/tsconfig/base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
   },

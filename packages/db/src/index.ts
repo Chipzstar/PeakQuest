@@ -2,12 +2,10 @@ import "dotenv/config";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 
-import * as auth from "./schema/auth";
-import * as quest from "./schema/quest";
+export * from './schema/quest';
+export * from './schema/auth';
 
-export const schema = { ...auth, ...quest };
-
-const DATABASE_URL = process.env.DATABASE_URL as string
+const DATABASE_URL = process.env.DATABASE_URL!
 const DATABASE_AUTH_TOKEN = process.env.DATABASE_AUTH_TOKEN
 
 const client = createClient({
