@@ -5,6 +5,8 @@ import { drizzle } from "drizzle-orm/libsql";
 export * from './schema/quest';
 export * from './schema/auth';
 
+export * from "./seed-data"
+
 const DATABASE_URL = process.env.DATABASE_URL!
 const DATABASE_AUTH_TOKEN = process.env.DATABASE_AUTH_TOKEN
 
