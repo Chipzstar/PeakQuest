@@ -2,36 +2,41 @@
 
 import React from 'react';
 import Character from "~/app/components/Character";
-import type {CharacterData} from "~/app/utils/types";
-import {Button} from "@peakquest/ui/button";
+import type { CharacterData } from "~/app/utils/types";
+import { Button } from "@peakquest/ui/button";
 import { useRouter } from 'next/navigation';
 
 const characters: CharacterData[] = [
     {
+        id: 1,
         src: '/images/characters/character-1.svg',
         alt: 'character-1',
         width: 140,
         height: 200
     },
     {
+        id: 2,
         src: '/images/characters/character-2.svg',
         alt: 'character-2',
         width: 150,
         height: 200
     },
     {
+        id: 3,
         src: '/images/characters/character-3.svg',
         alt: 'character-3',
         width: 100,
         height: 200
     },
     {
+        id: 4,
         src: '/images/characters/character-4.svg',
         alt: 'character-4',
         width: 200,
         height: 200
     },
     {
+        id: 5,
         src: '/images/characters/character-5.svg',
         alt: 'character-5',
         width: 170,
@@ -55,6 +60,7 @@ const SelectPlayer = () => {
                 <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 place-items-center">
                     {characters.map((c, index) => (
                         <Character
+                            id={c.id}
                             key={index}
                             width={c.width}
                             height={c.height}
