@@ -20,7 +20,7 @@ import { motion } from "framer-motion"
 
 const Confirm = () => {
     const [loading, setLoading] = useState(false);
-    const [questId, setQuestId] = useState("123");
+    const [questId, setQuestId] = useState("");
     const [goalState, setGoalState] = useAtom(goalStateAtom)
 
     const form = useForm<UserFormData>({

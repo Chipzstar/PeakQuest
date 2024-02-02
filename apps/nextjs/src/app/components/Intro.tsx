@@ -11,9 +11,6 @@ import { Button } from '@peakquest/ui/button';
 
 const Intro = ({ name, questId }: { name: string, questId: string }) => {
     const router = useRouter()
-    // TODO: add quest id to route /${questId}
-    const goToRoute = () => router.push(`${PATHS.QUEST}`)
-
 
     return (
         <main className="page-container bg-mountain-watermark bg-center justify-center">
@@ -37,7 +34,7 @@ const Intro = ({ name, questId }: { name: string, questId: string }) => {
 
                         </CardFooter>
                         <div className='p-6'>
-                            <Button onClick={goToRoute} className="bg-button text-white w-32">Embark</Button>
+                            <Button onClick={() => router.push(`${PATHS.QUEST}/${questId}`)} className="bg-button text-white w-32">Embark</Button>
                         </div>
                     </ScrollArea>
                 </Card>
