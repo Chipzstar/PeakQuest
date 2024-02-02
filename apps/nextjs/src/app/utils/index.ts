@@ -6,7 +6,6 @@ export const PATHS = {
     QUESTION_4: '/challenges-and-obstacles',
     QUESTION_5: '/dedicate-time-weekly',
     CONFIRM: '/confirm',
-    INTRO: "/intro",
     QUEST: '/quest',
     SELECT_PLAYER: '/select-player'
 }
@@ -57,23 +56,23 @@ export const MONSTERS = [
     {
         name: 'Aetherscale Wyrmfire',
         image: '/images/monsters/boss-8.png',
-        position: { x: 45.5 , y: 28 },
+        position: { x: 45.5, y: 28 },
         classNames: 'h-12 w-12'
     },
     {
         name: 'Aetherscale Wyrmfire',
         image: '/images/monsters/boss-9.png',
-        position: { x: 50 , y: 24 },
+        position: { x: 50, y: 24 },
         classNames: 'h-10 w-10'
     },
     {
         name: 'Aetherscale Wyrmfire',
         image: '/images/monsters/boss-10.png',
-        position: { x: 47 , y: 20 },
+        position: { x: 47, y: 20 },
     },
     {
         name: 'Drakonirion Thunderwing',
         image: '/images/monsters/boss-11.png',
-        position: { x: 49 , y: 17 },
+        position: { x: 49, y: 17 },
     }
 ]

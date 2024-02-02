@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from "@peakquest/ui/button";
-import { PATHS } from "~/app/utils";
-import { useRouter } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@peakquest/ui/form";
 import { useForm } from "react-hook-form";
@@ -17,10 +15,12 @@ import { useAtom } from 'jotai'
 import type { GoalState } from '~/app/lib/store';
 import { goalStateAtom } from '~/app/lib/store';
 import { toast } from '@peakquest/ui/toast';
+import Intro from '~/app/components/Intro';
+import { motion } from "framer-motion"
 
 const Confirm = () => {
-    const router = useRouter()
     const [loading, setLoading] = useState(false);
+    const [questId, setQuestId] = useState("");
     const [goalState, setGoalState] = useAtom(goalStateAtom)
 
     const form = useForm<UserFormData>({
@@ -30,8 +30,8 @@ const Confirm = () => {
     async function onSubmit(data: UserFormData) {
         setLoading(true)
         try {
-            await saveGoal({ ...goalState as GoalState, name: data.name, email: data.email })
-            router.push(PATHS.INTRO)
+            const id = await saveGoal({ ...goalState as GoalState, name: data.name, email: data.email })
+            setQuestId(id)
         } catch (err: any) {
             console.error(err)
             toast("Something went wrong. Please try again.", {
@@ -45,6 +45,7 @@ const Confirm = () => {
     }
 
     useEffect(() => {
+        // TODO: look into saving user id too
         const storedValue = window.localStorage.getItem('user');
         if (storedValue) {
             try {
@@ -65,6 +66,21 @@ const Confirm = () => {
         })
         return () => subscription.unsubscribe();
     }, [form.watch])
+
+    if (questId !== "") {
+        return <motion.main
+            variants={{
+                hidden: { opacity: 0, x: 0, y: 0 },
+                enter: { opacity: 1, x: 0, y: 0 },
+            }}
+            initial="hidden"
+            animate="enter"
+            transition={{ duration: 2 }}
+        >
+            <Intro name={form.getValues("name")} questId={questId} />
+
+        </motion.main>
+    }
 
     return (
         <main className="page-container justify-center bg-center bg-cover bg-no-repeat bg-mythical-beast">
