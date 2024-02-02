@@ -18,12 +18,7 @@ export const prompts: any[] = [
         
         Tasks should be retuned in the following JSON format:
         
-        \`{
-            "tasks": [
-                {“task_name”: task_name,
-                 “task_description”: task_description}
-                ]
-        }\` `,
+        \`[{“task_name”: task_name, “task_description”: task_description}]\` `,
         variables: ["GOAL_INPUT", "TIME_FRAME", "DAYS_AVAILABLE", "CURRENT_LEVEL"]
     }
 ]

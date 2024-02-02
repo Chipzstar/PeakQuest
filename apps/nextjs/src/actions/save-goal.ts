@@ -59,11 +59,14 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
 
 
     const chatCompletion = await openai.chat.completions.create({
-        messages: [{ role: 'system', content: updatedPrompt }],
+        messages: [{
+            role: "system",
+            content: "You are a machine that only returns and replies with valid, iterable RFC8259 compliant JSON in your responses"
+        }, { role: 'user', content: updatedPrompt }],
         model: 'gpt-3.5-turbo-1106',
     });
 
-    const rawResponse = chatCompletion.choices[0]?.message.content
+    const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
 
     let parsedResponse;
     let isValid;
@@ -91,7 +94,7 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
         promptId: promptId,
         isResponseValid: isValid,
         rawOpenAIResponse: rawResponse,
-        openAIResponse: isValid ? rawResponse : null
+        openAIResponse: isValid ? JSON.stringify(parsedResponse) : null
     })
 
     return questId
