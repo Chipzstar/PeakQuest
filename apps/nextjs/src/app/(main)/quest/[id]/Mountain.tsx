@@ -1,14 +1,14 @@
 "use client"
 
 import React from 'react';
-import {MONSTERS, PATHS} from "~/app/utils";
+import { MONSTERS, PATHS } from "~/app/utils";
 import Monster from "~/app/components/Monster";
-import {Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger} from "@peakquest/ui/tooltip";
-import {useRouter, useSearchParams} from 'next/navigation';
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 // TODO: Adapt Quest page to use canvas API using KonvaJS
-const Quest = () => {
+const Mountain = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const characterSrc = searchParams.get("src") ?? "/images/characters/character-1.svg"
@@ -36,11 +36,11 @@ const Quest = () => {
                         top: "87%",
                         left: "43%"
                     }}>
-                        <Image src={characterSrc} alt="Character" width={characterWidth} height={characterHeight}/>
+                        <Image src={characterSrc} alt="Character" width={characterWidth} height={characterHeight} />
                     </TooltipTrigger>
                     <TooltipContent>
                         <span>Change your Peak Quest Character</span>
-                        <TooltipArrow/>
+                        <TooltipArrow />
                     </TooltipContent>
                 </Tooltip>
             </TooltipProvider>
@@ -48,4 +48,4 @@ const Quest = () => {
     );
 };
 
-export default Quest;
+export default Mountain;
