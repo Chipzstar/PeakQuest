@@ -4,15 +4,16 @@ import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@peakquest/ui/card";
 import { useLocalStorageValue } from '@react-hookz/web';
 import type { UserFormData } from "~/app/utils/types";
-import { useClickAnyWhere } from "usehooks-ts";
 import { useRouter } from 'next/navigation';
 import { PATHS } from "~/app/utils";
 import { ScrollArea } from "@peakquest/ui/scroll-area";
+import { Button } from '@peakquest/ui/button';
 
 const Intro = ({ name, questId }: { name: string, questId: string }) => {
     const router = useRouter()
+    // TODO: add quest id to route /${questId}
+    const goToRoute = () => router.push(`${PATHS.QUEST}`)
 
-    useClickAnyWhere(() => router.push(PATHS.QUEST))
 
     return (
         <main className="page-container bg-mountain-watermark bg-center justify-center">
@@ -33,7 +34,11 @@ const Intro = ({ name, questId }: { name: string, questId: string }) => {
                         </CardContent>
                         <CardFooter>
                             <span>Warm regards,<br /><span className="font-bold">PEAK QUEST TEAM</span></span>
+
                         </CardFooter>
+                        <div className='p-6'>
+                            <Button onClick={goToRoute} className="bg-button text-white w-32">Embark</Button>
+                        </div>
                     </ScrollArea>
                 </Card>
             </div>
