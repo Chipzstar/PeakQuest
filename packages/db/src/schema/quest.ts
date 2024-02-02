@@ -42,3 +42,14 @@ export const character = sqliteTable("character", {
   name: text("name").notNull(),
   path: text("path").notNull()
 })
+
+export const tasks = sqliteTable("task", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  questId: text("quest_id").notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  isComplete: integer("is_complete", { mode: "boolean" }),
+  index: integer("index", { mode: "number" }),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+})
