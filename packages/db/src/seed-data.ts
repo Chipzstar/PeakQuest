@@ -22,3 +22,31 @@ export const prompts: any[] = [
         variables: ["GOAL_INPUT", "TIME_FRAME", "DAYS_AVAILABLE", "CURRENT_LEVEL"]
     }
 ]
+
+export const characters: any[] = [
+    {
+        id: 1,
+        name: "",
+        path: '/images/characters/character-1.svg',
+    },
+    {
+        id: 2,
+        name: "",
+        path: '/images/characters/character-2.svg',
+    },
+    {
+        id: 3,
+        name: "",
+        path: '/images/characters/character-3.svg',
+    },
+    {
+        id: 4,
+        name: "",
+        path: '/images/characters/character-4.svg',
+    },
+    {
+        id: 5,
+        name: "",
+        path: '/images/characters/character-5.svg',
+    },
+]
