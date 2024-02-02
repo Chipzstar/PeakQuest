@@ -21,6 +21,8 @@ const Mountain = () => {
             {MONSTERS.map((monster, index) => (
                 <Monster
                     key={index}
+                    stepNum={index}
+                    name={monster.name}
                     src={monster.image}
                     position={monster.position}
                     classNames={monster?.classNames}
