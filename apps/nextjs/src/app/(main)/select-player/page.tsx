@@ -5,7 +5,6 @@ import Character from "~/app/components/Character";
 import type {CharacterData} from "~/app/utils/types";
 import {Button} from "@peakquest/ui/button";
 import { useRouter } from 'next/navigation';
-import { useLocalStorageValue } from '@react-hookz/web';
 
 const characters: CharacterData[] = [
     {
@@ -43,17 +42,17 @@ const characters: CharacterData[] = [
 const SelectPlayer = () => {
     const router = useRouter()
     return (
-        <main className="page-container">
+        <main className="page-container-scrollable py-10">
             <div className="flex flex-col grow w-full">
                 <div className="flex flex-col grow justify-center items-center space-y-6 sm:space-y-8 text-center">
-                    <h1 className="text-2xl text-primary sm:text-7xl font-bold">
+                    <h1 className="text-3xl sm:text-5xl text-primary lg:text-7xl font-bold">
                         Select your player
                     </h1>
-                    <p className="sm:text-2xl text-secondary"><span className="font-bold">Remember: </span>Life is a
+                    <p className="sm:text-lg lg:text-2xl text-secondary"><span className="font-bold">Remember: </span>Life is a
                         marathon, not a sprint
                     </p>
                 </div>
-                <section className="flex grow justify-around">
+                <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 place-items-center">
                     {characters.map((c, index) => (
                         <Character
                             key={index}

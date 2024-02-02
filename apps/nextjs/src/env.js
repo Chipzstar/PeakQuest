@@ -19,7 +19,8 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
-    DATABASE_AUTH_TOKEN: z.string()
+    DATABASE_AUTH_TOKEN: z.string(),
+    OPENAI_API_KEY: z.string()
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -36,7 +37,7 @@ export const env = createEnv({
     DATABASE_AUTH_TOKEN: process.env.DATABASE_AUTH_TOKEN,
     PORT: process.env.PORT,
     VERCEL_URL: process.env.VERCEL_URL,
-
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   skipValidation:

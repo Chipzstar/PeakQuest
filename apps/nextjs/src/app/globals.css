@@ -53,6 +53,9 @@
     .page-container {
         @apply flex flex-col items-center md:justify-center h-screen md:py-8 text-primary
     }
+    .page-container-scrollable {
+        @apply flex flex-col items-center md:justify-center min-h-screen md:py-8 text-primary
+    }
     .jumbo-checkbox {
         box-shadow: 0 10px 4px 0 rgba(0, 0, 0, 0.25);
         @apply h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 rounded-md bg-white border-none
