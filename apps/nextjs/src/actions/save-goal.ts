@@ -2,9 +2,11 @@
 
 import type { GoalState } from "~/app/lib/store"
 import { v4 as uuidv4 } from 'uuid';
-import { db, prompts, quest, users } from "@peakquest/db"
+import { db, prompts, quest, users, tasks } from "@peakquest/db"
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
+
+type Tasks = typeof tasks.$inferInsert[];
 
 const openai = new OpenAI({
     apiKey: process.env['OPENAI_API_KEY']
@@ -68,14 +70,13 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
 
     const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
 
-    let parsedResponse;
-    let isValid;
+    let parsedResponse: { task_name: string, task_description: string }[] | undefined;
+    let isValid: boolean;
     try {
         parsedResponse = JSON.parse(rawResponse as string)
         isValid = true;
     } catch (error) {
         console.log("could not parse openAI response");
-        parsedResponse = null
         isValid = false;
     }
 
@@ -86,16 +87,42 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
 
     let questId = uuidv4()
 
-    await db.insert(quest).values({
-        id: questId,
-        createdBy: userId,
-        goal: data.oneGoal as string,
-        goalParams: goalParams,
-        promptId: promptId,
-        isResponseValid: isValid,
-        rawOpenAIResponse: rawResponse,
-        openAIResponse: isValid ? JSON.stringify(parsedResponse) : null
-    })
+
+
+    await db.transaction(
+        async (tx) => {
+
+            await tx.insert(quest).values({
+                id: questId,
+                createdBy: userId,
+                goal: data.oneGoal as string,
+                goalParams: goalParams,
+                promptId: promptId,
+                isResponseValid: isValid,
+                rawOpenAIResponse: rawResponse,
+                openAIResponse: isValid ? rawResponse : null
+            })
+
+            if (isValid && parsedResponse !== undefined) {
+                const newTasks: Tasks = parsedResponse.map((x, index) => {
+                    return {
+                        questId,
+                        index,
+                        name: x.task_name,
+                        description: x.task_description,
+                        isComplete: false,
+                    }
+                })
+
+                await tx.insert(tasks).values(newTasks)
+
+            }
+
+
+        }, {
+        behavior: "deferred",
+    }
+    );
 
     return questId
 }
