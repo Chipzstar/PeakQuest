@@ -7,6 +7,7 @@ const config = {
   ],
   rules: {
     "react/prop-types": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
   },
   globals: {
     React: "writable",
