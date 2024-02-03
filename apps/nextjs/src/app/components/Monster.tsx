@@ -27,16 +27,20 @@ interface Props {
 		height: number | string;
 	}
 	classNames?: string;
+	taskName: string;
+	taskDescription: string;
 }
 
 const Monster: FC<Props> = ({
-								src,
-								name,
-								stepNum,
-								position,
-								size = { width: 100, height: 100 },
-								classNames = ""
-							}: Props) => {
+	src,
+	name,
+	stepNum,
+	position,
+	size = { width: 100, height: 100 },
+	classNames = "",
+	taskName,
+	taskDescription,
+}: Props) => {
 
 	const style: CSSProperties = {
 		position: 'absolute',
@@ -54,7 +58,7 @@ const Monster: FC<Props> = ({
 	return (
 		<Dialog>
 			<DialogTrigger asChild role="button">
-				<img src={src} alt="Monster" style={style} className={classNames}/>
+				<img src={src} alt="Monster" style={style} className={classNames} />
 			</DialogTrigger>
 			<DialogContent className="w-3/4 md:max-w-2xl">
 				<DialogHeader>
@@ -62,7 +66,7 @@ const Monster: FC<Props> = ({
 						<img src={src} alt="Monster" style={{
 							width: "100%",
 							height: "100%"
-						}}/>
+						}} />
 					</div>
 					<DialogTitle>Defeat {name}</DialogTitle>
 					<DialogDescription>
@@ -70,16 +74,8 @@ const Monster: FC<Props> = ({
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col justify-center space-x-2 py-8">
-					<p id="task-name" className="md:text-4xl font-semibold mb-4">Buy Domain</p>
-					<ul>
-						<li>Buy a domain name for the new business you want to start. We suggest using this name
-							“xyz.com”
-						</li>
-						<br/>
-						<li>Use namecheap.com, godaddy.com and etc. to buy the domain.</li>
-						<br/>
-						<li>Please check the tickbox when this is done.</li>
-					</ul>
+					<p id="task-name" className="md:text-4xl font-semibold mb-4">{taskName}</p>
+					<p>{taskDescription}</p>
 				</div>
 				<DialogFooter className="justify-end">
 					<DialogClose asChild>

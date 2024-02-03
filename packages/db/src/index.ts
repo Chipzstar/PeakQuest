@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
+import * as schema from './schema/quest';
 
 export * from './schema/quest';
 export * from './schema/auth';
@@ -15,4 +16,4 @@ const client = createClient({
   authToken: DATABASE_AUTH_TOKEN,
 });
 
-export const db = drizzle(client);
+export const db = drizzle(client, { schema });
