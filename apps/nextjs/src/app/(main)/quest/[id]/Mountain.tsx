@@ -1,19 +1,28 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { MONSTERS, PATHS } from "~/app/utils";
 import Monster from "~/app/components/Monster";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import SelectPlayer from '~/app/components/SelectPlayer';
+
+interface MountainParams {
+    characterId?: string
+}
 
 // TODO: Adapt Quest page to use canvas API using KonvaJS
-const Mountain = () => {
-    const router = useRouter()
+const Mountain = (params: MountainParams) => {
+    const [showSelectCharacter, setShowSelectCharacter] = useState(false)
     const searchParams = useSearchParams()
     const characterSrc = searchParams.get("src") ?? "/images/characters/character-1.svg"
     const characterWidth = Number(searchParams.get("width") ?? 140)
     const characterHeight = Number(searchParams.get("height") ?? 200)
+
+    if (showSelectCharacter) {
+        return <SelectPlayer setShowCharacter={setShowSelectCharacter} />
+    }
 
     return (
         <div
@@ -30,7 +39,7 @@ const Mountain = () => {
             ))}
             <TooltipProvider delayDuration={200}>
                 <Tooltip>
-                    <TooltipTrigger onClick={() => router.push(PATHS.SELECT_PLAYER)} style={{
+                    <TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
                         position: 'absolute',
                         width: characterWidth / 3 ?? 100,
                         top: "87%",

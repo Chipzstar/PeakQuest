@@ -44,8 +44,8 @@ const characters: CharacterData[] = [
     }
 ]
 
-const SelectPlayer = () => {
-    const router = useRouter()
+const SelectPlayer = ({ setShowCharacter }: { setShowCharacter: React.Dispatch<React.SetStateAction<boolean>> }) => {
+
     return (
         <main className="page-container-scrollable py-10">
             <div className="flex flex-col grow w-full">
@@ -70,7 +70,7 @@ const SelectPlayer = () => {
                     ))}
                 </section>
                 <footer className="pt-10 px-10 flex justify-end">
-                    <Button onClick={() => router.back()} className="bg-button text-white w-32">Go Back</Button>
+                    <Button onClick={() => setShowCharacter(false)} className="bg-button text-white w-32">Go Back</Button>
                 </footer>
             </div>
         </main>
