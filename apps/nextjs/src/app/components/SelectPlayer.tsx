@@ -1,10 +1,14 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import Character from "~/app/components/Character";
 import type { CharacterData } from "~/app/utils/types";
 import { Button } from "@peakquest/ui/button";
-import { useRouter } from 'next/navigation';
+import { updateCharacter } from '~/actions/update-character';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@peakquest/ui';
+
+
 
 const characters: CharacterData[] = [
     {
@@ -44,7 +48,15 @@ const characters: CharacterData[] = [
     }
 ]
 
-const SelectPlayer = ({ setShowCharacter }: { setShowCharacter: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const SelectPlayer = ({ questId, setShowCharacter }: { questId: string; setShowCharacter: React.Dispatch<React.SetStateAction<boolean>> }) => {
+    const [loading, setLoading] = useState(false);
+
+    async function clickHandler(charcterId: number) {
+        setLoading(true)
+        // TODO: error handling
+        await updateCharacter(questId, charcterId)
+        setShowCharacter(false)
+    }
 
     return (
         <main className="page-container-scrollable py-10">
@@ -56,17 +68,23 @@ const SelectPlayer = ({ setShowCharacter }: { setShowCharacter: React.Dispatch<R
                     <p className="sm:text-lg lg:text-2xl text-secondary"><span className="font-bold">Remember: </span>Life is a
                         marathon, not a sprint
                     </p>
+                    {loading ? <div> <Loader2 className={cn("text-white w-64 h-64  animate-spin hidden", {
+                        "block": loading,
+                    })} /></div> : ""}
                 </div>
                 <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 place-items-center">
                     {characters.map((c, index) => (
-                        <Character
-                            id={c.id}
-                            key={index}
-                            width={c.width}
-                            height={c.height}
-                            alt={c.alt}
-                            src={c.src}
-                        />
+                        <button key={index} onClick={() => clickHandler(c.id)}
+                        >
+                            <Character
+                                id={c.id}
+
+                                width={c.width}
+                                height={c.height}
+                                alt={c.alt}
+                                src={c.src}
+                            />
+                        </button>
                     ))}
                 </section>
                 <footer className="pt-10 px-10 flex justify-end">
