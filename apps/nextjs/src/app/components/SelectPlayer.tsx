@@ -7,10 +7,10 @@ import { Button } from "@peakquest/ui/button";
 import { updateCharacter } from '~/actions/update-character';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@peakquest/ui';
+import { useAtom } from 'jotai'
+import { selectedCharacterAtom } from '../lib/store';
 
-
-
-const characters: CharacterData[] = [
+export const characters: CharacterData[] = [
     {
         id: 1,
         src: '/images/characters/character-1.svg',
@@ -50,11 +50,14 @@ const characters: CharacterData[] = [
 
 const SelectPlayer = ({ questId, setShowCharacter }: { questId: string; setShowCharacter: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [loading, setLoading] = useState(false);
+    const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 
-    async function clickHandler(charcterId: number) {
+
+    async function clickHandler(character: CharacterData) {
         setLoading(true)
         // TODO: error handling
-        await updateCharacter(questId, charcterId)
+        await updateCharacter(questId, character.id)
+        setSelectedCharacter(character)
         setShowCharacter(false)
     }
 
@@ -74,7 +77,7 @@ const SelectPlayer = ({ questId, setShowCharacter }: { questId: string; setShowC
                 </div>
                 <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 place-items-center">
                     {characters.map((c, index) => (
-                        <button key={index} onClick={() => clickHandler(c.id)}
+                        <button key={index} onClick={() => clickHandler(c)}
                         >
                             <Character
                                 id={c.id}
