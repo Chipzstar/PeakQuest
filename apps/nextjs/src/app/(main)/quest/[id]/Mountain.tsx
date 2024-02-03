@@ -9,11 +9,13 @@ import SelectPlayer from '~/app/components/SelectPlayer';
 import { useAtom } from 'jotai'
 import { selectedCharacterAtom } from '~/app/lib/store';
 import { characters } from '~/app/components/SelectPlayer';
+import { tasks } from "@peakquest/db"
 
 
 interface MountainParams {
-    questId?: string
-    characterId?: number | null
+    questId: string
+    characterId: number | null
+    tasks: typeof tasks.$inferSelect[]
 }
 
 const characterMap = new Map();
@@ -40,14 +42,22 @@ const Mountain = (params: MountainParams) => {
 
 
     if (showSelectCharacter || (selectedCharacter == undefined)) {
-        return <SelectPlayer questId={params.questId as string} setShowCharacter={setShowSelectCharacter} />
+        return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter} />
     }
+
+    const tasks = params.tasks
 
     return (
         <div
             className="h-screen relative bg-mountain-quest-mobile bg-cover md:bg-mountain-quest bg-[bottom_2rem_right_1rem] md:bg-center bg-no-repeat">
-            {MONSTERS.map((monster, index) => (
-                <Monster
+            {tasks.map((task, index) => {
+                const monster = MONSTERS[index]
+
+                if (monster == undefined) return
+
+                return <Monster
+                    taskName={task.name}
+                    taskDescription={task.description}
                     key={index}
                     stepNum={index}
                     name={monster.name}
@@ -55,7 +65,7 @@ const Mountain = (params: MountainParams) => {
                     position={monster.position}
                     classNames={monster?.classNames}
                 />
-            ))}
+            })}
             <TooltipProvider delayDuration={200}>
                 <Tooltip>
                     <TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{

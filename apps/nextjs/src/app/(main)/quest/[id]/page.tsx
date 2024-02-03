@@ -1,23 +1,31 @@
 import React from 'react';
 import Mountain from './Mountain';
-import { db, quest } from '@peakquest/db';
+import { db, quest, tasks } from '@peakquest/db';
 import { notFound } from "next/navigation";
-import { eq } from 'drizzle-orm';
+import { eq, asc } from 'drizzle-orm';
 
 
 const Quest = async ({ params }: { params: { id: string } }) => {
     const questId = params.id;
 
-    const questDbRes = await db.select({ id: quest.id, characterId: quest.characterId }).from(quest).where(eq(quest.id, questId))
+    const questDbRes = await db.query.quest.findFirst({
+        where: eq(quest.id, questId),
+        with: {
+            tasks: {
+                orderBy: [asc(tasks.index)]
+            }
+        }
+    })
 
-    if (questDbRes.length == 0) {
+    if (questDbRes == undefined) {
         notFound();
     }
 
-    const questRecord = questDbRes[0]
+    const questRecord = questDbRes
+
 
     return (
-        <Mountain questId={questRecord?.id as string} characterId={questRecord?.characterId} />
+        <Mountain questId={questRecord.id} characterId={questRecord.characterId} tasks={questRecord.tasks} />
     );
 };
 

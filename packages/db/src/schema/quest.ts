@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export interface GoalParams {
@@ -53,3 +53,11 @@ export const tasks = sqliteTable("task", {
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 })
+
+export const questRelations = relations(quest, ({ many }) => ({
+  tasks: many(tasks),
+}));
+
+export const taskRelations = relations(tasks, ({ one }) => ({
+  quest: one(quest, { fields: [tasks.questId], references: [quest.id] }),
+}));
