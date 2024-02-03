@@ -9,6 +9,7 @@ const Quest = async ({ params }: { params: { id: string } }) => {
     const questId = params.id;
 
     const questDbRes = await db.select({ id: quest.id, characterId: quest.characterId }).from(quest).where(eq(quest.id, questId))
+
     if (questDbRes.length == 0) {
         notFound();
     }
@@ -16,7 +17,7 @@ const Quest = async ({ params }: { params: { id: string } }) => {
     const questRecord = questDbRes[0]
 
     return (
-        <Mountain characterId={questRecord?.id} />
+        <Mountain questId={questRecord?.id as string} characterId={questRecord?.characterId} />
     );
 };
 
