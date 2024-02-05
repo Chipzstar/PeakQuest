@@ -1,12 +1,12 @@
-import type {Metadata, Viewport} from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from 'next/font/local'
-import {Providers} from "./providers";
-import {cn} from "@peakquest/ui";
-import {ThemeProvider, ThemeToggle} from "@peakquest/ui/theme";
-import {Toaster} from "@peakquest/ui/toast";
+import { Providers } from "./providers";
+import { cn } from "@peakquest/ui";
+import { ThemeProvider, ThemeToggle } from "@peakquest/ui/theme";
+import { Toaster } from "@peakquest/ui/toast";
 
-import {env} from "~/env";
-import {TRPCReactProvider} from "~/trpc/react";
+import { env } from "~/env";
+import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
@@ -48,24 +48,25 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
 	themeColor: [
-		{media: "(prefers-color-scheme: light)", color: "white"},
-		{media: "(prefers-color-scheme: dark)", color: "black"},
+		{ media: "(prefers-color-scheme: light)", color: "white" },
+		{ media: "(prefers-color-scheme: dark)", color: "black" },
 	],
 };
 
 export default function RootLayout(props: { children: React.ReactNode }) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-		<body
-			className={cn(
-				"min-h-screen text-foreground bg-overlay-400",
-				LucidaGrande.className
-			)}
-		>
-		<Providers>
-			{props.children}
-		</Providers>
-		</body>
+			<head><script async src="https://eu.umami.is/script.js" data-website-id="2e93f9f7-d995-486a-8670-4a173f444b8b"></script></head>
+			<body
+				className={cn(
+					"min-h-screen text-foreground bg-overlay-400",
+					LucidaGrande.className
+				)}
+			>
+				<Providers>
+					{props.children}
+				</Providers>
+			</body>
 		</html>
 	);
 }
