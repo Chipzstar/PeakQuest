@@ -3,6 +3,10 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
+  webpack: (config) => {
+    config.externals = [...config.externals, { canvas: "canvas" }];  // required to make Konva & react-konva work
+    return config;
+  },
   reactStrictMode: true,
 
   /** Enables hot reloading for local packages without a build step */

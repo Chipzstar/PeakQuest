@@ -18,7 +18,10 @@
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "vercel:dev": "dotenv -e .env -- vercel dev -p 3001",
+    "vercel:build": "dotenv -e .env -- vercel build",
+    "dopper:sync-env": "doppler secrets download --no-file --format env > .env.doppler"
   },
   "devDependencies": {
     "@peakquest/prettier-config": "workspace:^0.1.0",

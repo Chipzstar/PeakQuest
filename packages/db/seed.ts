@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { db } from "./src/index"
-import { prompt, character } from "./src/schema/quest";
-import { prompts, characters } from "./src/seed-data"
+import { db } from "./src"
+import { prompt, character } from "./src";
+import { prompts, characters } from "./src"
 
 
 

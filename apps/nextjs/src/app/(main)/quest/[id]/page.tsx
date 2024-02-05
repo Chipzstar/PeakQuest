@@ -1,8 +1,13 @@
 import React from 'react';
-import Mountain from './Mountain';
 import { db, quest, tasks } from '@peakquest/db';
 import { notFound } from "next/navigation";
 import { eq, asc } from 'drizzle-orm';
+
+import dynamic from "next/dynamic";
+
+const NoSSRMountain = dynamic(() => import("./Mountain"), {
+    ssr: false,
+});
 
 
 const Quest = async ({ params }: { params: { id: string } }) => {
@@ -17,15 +22,16 @@ const Quest = async ({ params }: { params: { id: string } }) => {
         }
     })
 
-    if (questDbRes == undefined) {
-        notFound();
-    }
+    if (questDbRes == undefined) notFound();
 
     const questRecord = questDbRes
 
-
     return (
-        <Mountain questId={questRecord.id} characterId={questRecord.characterId} tasks={questRecord.tasks} />
+        <NoSSRMountain
+            questId={questRecord.id}
+            characterId={questRecord.characterId}
+            tasks={questRecord.tasks}
+        />
     );
 };
 

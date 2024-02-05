@@ -28,9 +28,7 @@ async function getUserId(email: string, name: string): Promise<string> {
     } catch (error) {
         let res = await db.select().from(users).where(eq(users.email, email))
         return res[0]?.id as string
-
     }
-
 }
 
 
@@ -69,6 +67,7 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
     });
 
     const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
+    console.log(rawResponse)
 
     let parsedResponse: { task_name: string, task_description: string }[] | undefined;
     let isValid: boolean;
@@ -86,12 +85,13 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
     delete goalParams.email
 
     let questId = uuidv4()
+    console.log("-----------------------------------------------")
+    console.log("Quest Id: " + questId)
 
 
 
     await db.transaction(
         async (tx) => {
-
             await tx.insert(quest).values({
                 id: questId,
                 createdBy: userId,
@@ -115,7 +115,6 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
                 })
 
                 await tx.insert(tasks).values(newTasks)
-
             }
 
 

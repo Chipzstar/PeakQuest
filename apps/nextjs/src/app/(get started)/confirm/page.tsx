@@ -15,7 +15,7 @@ import { useAtom } from 'jotai'
 import type { GoalState } from '~/app/lib/store';
 import { goalStateAtom } from '~/app/lib/store';
 import { toast } from '@peakquest/ui/toast';
-import Intro from '~/app/components/Intro';
+import Intro from '~/components/Intro';
 import { motion } from "framer-motion"
 
 const Confirm = () => {
@@ -36,7 +36,7 @@ const Confirm = () => {
             console.error(err)
             toast("Something went wrong. Please try again.", {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                description: err.message,
+                description: err.message as string,
                 duration: 3000
             })
         } finally {
