@@ -13,66 +13,71 @@ export const PATHS = {
 export const MONSTERS = [
     {
         name: 'Aetherscale Wyrmfire',
-        image: '/images/monsters/boss-1.png',
+        image: '/images/monsters/Aetherscale Wyrmfire.png',
         position: { x: 60, y: 70 },
         classNames: 'h-32 w-32'
     },
     {
         name: 'Celestialflare Ignistris',
-        image: '/images/monsters/boss-2.png',
+        image: '/images/monsters/Celestialflare Ignistris.png',
         position: { x: 41, y: 60 },
         classNames: 'h-32 w-32'
     },
     {
         name: 'Cragclaw',
-        image: '/images/monsters/boss-3.png',
+        image: '/images/monsters/Cragclaw.png',
         position: { x: 55, y: 55 },
         classNames: 'h-24 w-24'
     },
     {
         name: 'Stormscale Draconith',
-        image: '/images/monsters/boss-4.png',
+        image: '/images/monsters/Stormscale Draconith.png',
         position: { x: 39, y: 47 },
         classNames: 'h-20 w-20'
     },
     {
         name: 'Obsidianfang Talondrake',
-        image: '/images/monsters/boss-5.png',
+        image: '/images/monsters/Obsidianfang Talondrake.png',
         position: { x: 52, y: 41 },
         classNames: 'h-20 w-20'
     },
     {
         name: 'Whisperwing',
-        image: '/images/monsters/boss-6.png',
+        image: '/images/monsters/Whisperwing.png',
         position: { x: 44, y: 38 },
         classNames: 'h-20 w-20'
     },
     {
         name: 'Tremorhide',
-        image: '/images/monsters/boss-7.png',
+        image: '/images/monsters/Tremorhide.png',
         position: { x: 50, y: 32 },
         classNames: 'h-14 w-14'
     },
     {
         name: 'Mystwind',
-        image: '/images/monsters/boss-8.png',
+        image: '/images/monsters/Mystwind.png',
         position: { x: 45.5, y: 28 },
         classNames: 'h-12 w-12'
     },
     {
         name: 'Emberclaw Seraphion',
-        image: '/images/monsters/boss-9.png',
+        image: '/images/monsters/Emberclaw Seraphion.png',
         position: { x: 50, y: 24 },
         classNames: 'h-10 w-10'
     },
     {
         name: 'Flarefang',
-        image: '/images/monsters/boss-10.png',
+        image: '/images/monsters/Flarefang.png',
         position: { x: 47, y: 20 },
     },
     {
         name: 'Shadowmaw',
-        image: '/images/monsters/boss-11.png',
+        image: '/images/monsters/Shadowmaw.png',
+        position: { x: 49, y: 17 },
+    },
+    {
+        name: 'Drakonirion Thunderwing',
+        image: '/images/monsters/Drakonirion Thunderwing.png',
         position: { x: 49, y: 17 },
     }
 ]

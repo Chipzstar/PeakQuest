@@ -1,14 +1,14 @@
 "use client"
 
 import React, { useState } from 'react';
-import Character from "~/app/components/Character";
+import Character from "~/components/Character";
 import type { CharacterData } from "~/app/utils/types";
 import { Button } from "@peakquest/ui/button";
 import { updateCharacter } from '~/actions/update-character';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@peakquest/ui';
 import { useAtom } from 'jotai'
-import { selectedCharacterAtom } from '../lib/store';
+import { selectedCharacterAtom } from '../app/lib/store';
 
 export const characters: CharacterData[] = [
     {
@@ -77,11 +77,9 @@ const SelectPlayer = ({ questId, setShowCharacter }: { questId: string; setShowC
                 </div>
                 <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 place-items-center">
                     {characters.map((c, index) => (
-                        <button key={index} onClick={() => clickHandler(c)}
-                        >
+                        <button key={index} onClick={() => clickHandler(c)}>
                             <Character
                                 id={c.id}
-
                                 width={c.width}
                                 height={c.height}
                                 alt={c.alt}

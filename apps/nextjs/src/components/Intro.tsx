@@ -2,8 +2,6 @@
 
 import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@peakquest/ui/card";
-import { useLocalStorageValue } from '@react-hookz/web';
-import type { UserFormData } from "~/app/utils/types";
 import { useRouter } from 'next/navigation';
 import { PATHS } from "~/app/utils";
 import { ScrollArea } from "@peakquest/ui/scroll-area";
