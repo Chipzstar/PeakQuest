@@ -41,7 +41,7 @@ const Mountain = (params: MountainParams) => {
 	const [showSelectCharacter, setShowSelectCharacter] = useState(hasNotSelectedCharacter)
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
-	const [monsterImages, setMonsterImages] = React.useState<HTMLImageElement[]>([]);
+	const [monsterImages, { updateAt: setMonsterImage }] = useList<HTMLImageElement>(Array(12).fill(new window.Image()));
 	const [imagePositions, setImagePositions] = useState<Record<"x" | "y", number>[]>([]);
 	const [offsetWidths, setOffsetWidths] = useState<number[]>([])
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
@@ -101,7 +101,7 @@ const Mountain = (params: MountainParams) => {
 		MONSTERS.forEach((m, index) => {
 			let image = new window.Image()
 			image.src = m.image;
-			setMonsterImages((prevImages) => [...prevImages, image]);
+			image.onload = () => setMonsterImage(index, image);
 		})
 		window.addEventListener('resize', handleResize);
 		return () => {
@@ -109,10 +109,6 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
-	/*const BgImage = () => {
-		const [image] = useImage("/images/mountain-quest.png");
-		return <Image height={window.innerHeight} width={stageSize.height} image={image}/>;
-	};*/
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
 	}
