@@ -43,9 +43,9 @@ const Mountain = (params: MountainParams) => {
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
 	const [monsterImages, { updateAt: setMonsterImage }] = useList<HTMLImageElement>(Array(12).fill(new window.Image()));
 	const [imagePositions, setImagePositions] = useState<Record<"x" | "y", number>[]>([]);
-	const [offsetWidths, setOffsetWidths] = useState<number[]>([])
+	const [offsetWidths, setOffsetWidths] = useState<number[]>([]);
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
-	const [tooltipOpen, showTooltip] = useState<boolean>(false)
+	const [tooltipOpen, showTooltip] = useState<boolean>(false);
 
 	const characterSrc = selectedCharacter?.src
 	const characterWidth = selectedCharacter?.width
@@ -155,7 +155,7 @@ const Mountain = (params: MountainParams) => {
 											</div>
 											<DialogFooter className="justify-end">
 												<DialogClose asChild>
-													<Button type="button" variant="secondary"
+													<Button disabled={index !== 0} type="button" variant="secondary"
 															className="bg-button sm:px-10">
 														Done
 													</Button>
