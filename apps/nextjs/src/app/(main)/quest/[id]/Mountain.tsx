@@ -151,7 +151,7 @@ const Mountain = (params: MountainParams) => {
 											<div className="flex flex-col justify-center space-x-2 py-8 z-10">
 												<p id="task-name"
 												   className="md:text-3xl font-semibold mb-4 w-5/6">{task.name}</p>
-												<p>{task.description}</p>
+												<p>{index === 0 ? task.description : "This task will be revealed once all previous tasks are complete"}</p>
 											</div>
 											<DialogFooter className="justify-end">
 												<DialogClose asChild>
