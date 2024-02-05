@@ -98,11 +98,11 @@ const Mountain = (params: MountainParams) => {
 		const background = new window.Image();
 		background.src = '/images/mountain-quest.png';
 		background.onload = () => setBackgroundImage(background);
-		MONSTERS.forEach((m, index) => {
+		for (const [index, m] of MONSTERS.entries()) {
 			let image = new window.Image()
 			image.src = m.image;
 			image.onload = () => setMonsterImage(index, image);
-		})
+		}
 		window.addEventListener('resize', handleResize);
 		return () => {
 			window.removeEventListener('resize', handleResize);
