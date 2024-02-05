@@ -58,7 +58,7 @@ const Question2 = () => {
 					<div className="flex flex-col space-y-2 items-center">
 						<Progress value={40} className="w-2/3 md:w-96 md:h-7 rounded-3xl mb-8"/>
 						<h1 className="question-title sm:leading-normal lg:leading-tight">
-							How would you select your current level in relation to your goal?
+							What is your current skill level?
 						</h1>
 					</div>
 					<FormField
