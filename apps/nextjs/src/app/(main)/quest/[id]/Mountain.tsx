@@ -110,7 +110,7 @@ const Mountain = (params: MountainParams) => {
 	}, [])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
-		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
+		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter} />
 	}
 
 	const tasks = params.tasks
@@ -119,7 +119,7 @@ const Mountain = (params: MountainParams) => {
 			<Stage width={stageSize.width} height={window.innerHeight}>
 				<Layer>
 					{backgroundImage &&
-                        <Image image={backgroundImage} width={stageSize.width} height={stageSize.height}/>}
+						<Image image={backgroundImage} width={stageSize.width} height={stageSize.height} />}
 					{tasks.slice(0, 10).map((task, index) => {
 						const monster = MONSTERS[index]!
 						const monsterImage = monsterImages[index]!
@@ -137,23 +137,23 @@ const Mountain = (params: MountainParams) => {
 								/>
 								<Html>
 									<Dialog open={dialogOpen[index]}
-											onOpenChange={(state) => toggleDialog(index, state)}>
+										onOpenChange={(state) => toggleDialog(index, state)}>
 										<DialogContent className="md:max-w-3xl">
 											<DialogHeader>
 												<div className="absolute right-4 top-4 w-40 h-40 z-0">
 													<img src={monsterImage.src} alt="Monster" style={{
 														width: "100%",
 														height: "100%"
-													}}/>
+													}} />
 												</div>
 												<DialogTitle>Defeat {monster.name}</DialogTitle>
 											</DialogHeader>
 											<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4 lg:w-5/6">
 												{index === 0 ? (<>
-														<p id="task-name"
-														   className="md:text-3xl font-semibold mb-4">{task.name}</p>
-														<p>{task.description}</p>
-													</>
+													<p id="task-name"
+														className="md:text-3xl font-semibold mb-4">{task.name}</p>
+													<p>{task.description}</p>
+												</>
 												) : <p>This task will be revealed once all previous tasks are
 													complete</p>
 												}
@@ -161,7 +161,7 @@ const Mountain = (params: MountainParams) => {
 											<DialogFooter className="justify-end">
 												<DialogClose asChild>
 													<Button disabled={index !== 0} type="button" variant="secondary"
-															className="bg-button sm:px-10">
+														className="bg-button sm:px-10">
 														Done
 													</Button>
 												</DialogClose>
@@ -195,7 +195,7 @@ const Mountain = (params: MountainParams) => {
 								</TooltipTrigger>
 								<TooltipContent>
 									<span>Change your Peak Quest Character</span>
-									<TooltipArrow/>
+									<TooltipArrow />
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
