@@ -138,7 +138,7 @@ const Mountain = (params: MountainParams) => {
 								<Html>
 									<Dialog open={dialogOpen[index]}
 											onOpenChange={(state) => toggleDialog(index, state)}>
-										<DialogContent className="w-3/4 md:max-w-2xl">
+										<DialogContent className="md:max-w-3xl">
 											<DialogHeader>
 												<div className="absolute right-4 top-4 w-40 h-40 z-0">
 													<img src={monsterImage.src} alt="Monster" style={{
@@ -148,10 +148,15 @@ const Mountain = (params: MountainParams) => {
 												</div>
 												<DialogTitle>Defeat {monster.name}</DialogTitle>
 											</DialogHeader>
-											<div className="flex flex-col justify-center space-x-2 py-8 z-10">
-												<p id="task-name"
-												   className="md:text-3xl font-semibold mb-4 w-5/6">{task.name}</p>
-												<p>{index === 0 ? task.description : "This task will be revealed once all previous tasks are complete"}</p>
+											<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4 lg:w-5/6">
+												{index === 0 ? (<>
+														<p id="task-name"
+														   className="md:text-3xl font-semibold mb-4">{task.name}</p>
+														<p>{task.description}</p>
+													</>
+												) : <p>This task will be revealed once all previous tasks are
+													complete</p>
+												}
 											</div>
 											<DialogFooter className="justify-end">
 												<DialogClose asChild>
@@ -170,7 +175,7 @@ const Mountain = (params: MountainParams) => {
 					<Html divProps={{
 						style: {
 							position: 'absolute',
-                            transform: 'translate(-50%, 320%)',
+							transform: 'translate(-50%, 320%)',
 							left: "43%"
 						}
 					}}>
