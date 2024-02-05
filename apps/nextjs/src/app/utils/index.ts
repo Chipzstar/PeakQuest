@@ -24,10 +24,9 @@ export const MONSTERS = [
         classNames: 'h-32 w-32'
     },
     {
-        name: 'Cragclaw',
-        image: '/images/monsters/Cragclaw.png',
-        position: { x: 55, y: 55 },
-        classNames: 'h-24 w-24'
+        name: 'Shadowmaw',
+        image: '/images/monsters/Shadowmaw.png',
+        position: { x: 49, y: 17 },
     },
     {
         name: 'Stormscale Draconith',
@@ -39,12 +38,6 @@ export const MONSTERS = [
         name: 'Obsidianfang Talondrake',
         image: '/images/monsters/Obsidianfang Talondrake.png',
         position: { x: 52, y: 41 },
-        classNames: 'h-20 w-20'
-    },
-    {
-        name: 'Whisperwing',
-        image: '/images/monsters/Whisperwing.png',
-        position: { x: 44, y: 38 },
         classNames: 'h-20 w-20'
     },
     {
@@ -71,13 +64,20 @@ export const MONSTERS = [
         position: { x: 47, y: 20 },
     },
     {
-        name: 'Shadowmaw',
-        image: '/images/monsters/Shadowmaw.png',
-        position: { x: 49, y: 17 },
-    },
-    {
         name: 'Drakonirion Thunderwing',
         image: '/images/monsters/Drakonirion Thunderwing.png',
         position: { x: 49, y: 17 },
-    }
+    },
+    {
+        name: 'Cragclaw',
+        image: '/images/monsters/Cragclaw.png',
+        position: { x: 55, y: 55 },
+        classNames: 'h-24 w-24'
+    },
+    {
+        name: 'Whisperwing',
+        image: '/images/monsters/Whisperwing.png',
+        position: { x: 44, y: 38 },
+        classNames: 'h-20 w-20'
+    },
 ]
