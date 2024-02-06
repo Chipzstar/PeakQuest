@@ -14,13 +14,13 @@ export const MONSTERS = [
     {
         name: 'Aetherscale Wyrmfire',
         image: '/images/monsters/Aetherscale Wyrmfire.png',
-        position: { x: 60, y: 70 },
+        position: { x: 200, y: 300 },
         classNames: 'h-32 w-32'
     },
     {
         name: 'Celestialflare Ignistris',
         image: '/images/monsters/Celestialflare Ignistris.png',
-        position: { x: 41, y: 60 },
+        position: { x: -150, y: 550 },
         classNames: 'h-32 w-32'
     },
     {
