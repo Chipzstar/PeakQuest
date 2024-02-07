@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MonsterParams, MONSTERS } from "~/app/utils";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
 import SelectPlayer, { characters } from '~/components/SelectPlayer';
@@ -20,6 +20,8 @@ import {
 } from "@peakquest/ui/dialog";
 import { Button } from "@peakquest/ui/button";
 import { useList } from 'react-use';
+import { animateScroll as scroll } from 'react-scroll';
+import Konva from 'konva';
 
 interface MountainParams {
 	questId: string
@@ -99,7 +101,8 @@ const Mountain = (params: MountainParams) => {
 	const [bgImageWidth, setBgImageWidth] = useState(0)
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
-
+	const divRef = useRef<HTMLDivElement>(null)
+	const stageRef = useRef<Konva.Stage>(null)
 	const [stageSize, setStageSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -109,29 +112,42 @@ const Mountain = (params: MountainParams) => {
 			width: window.innerWidth,
 			height: window.innerHeight,
 		});
-	};
 
+	};
 	const characterSrc = selectedCharacter?.src
 	const characterWidth = selectedCharacter?.width
+
 	const characterHeight = selectedCharacter?.height
+
+	const scrollToBottom = () => {
+		const div = divRef.current!;
+		const stage = stageRef.current;
+		// scroll.scrollToBottom({ containerId: div.id });
+		scroll.scrollToBottom({});
+		// stage.offsetY(bgImageHeight - window.innerHeight);
+	};
 
 	useEffect(() => {
 		if (!hasNotSelectedCharacter) {
 			setSelectedCharacter(characterMap.get(params.characterId))
 		}
 		const background = new window.Image();
+		// window.innerWidth < 480 ? background.src = '/images/mountain-quest-mobile.png' : background.src = '/images/mountain-quest.png';
 		background.src = '/images/mountain-quest.png';
 		background.onload = () => {
 			setBackgroundImage(background)
 			setBgImageWidth(background.width)
 			setBgImageHeight(background.height)
 		};
-
 		window.addEventListener('resize', handleResize);
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [])
+
+	useEffect(() => {
+		divRef.current && setTimeout(scrollToBottom, 500)
+	}, [divRef.current])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -139,8 +155,12 @@ const Mountain = (params: MountainParams) => {
 
 	const tasks = params.tasks
 	return (
-		<div className='w-full'>
-			<Stage width={stageSize.width} height={stageSize.height * 2}>
+		<div id="stage-wrapper" className='min-h-screen w-full overflow-y-scroll' ref={divRef}>
+			<Stage
+				width={stageSize.width}
+				height={bgImageHeight}
+				ref={stageRef}
+			>
 				<Layer>
 					{backgroundImage &&
                         <Image
@@ -150,7 +170,9 @@ const Mountain = (params: MountainParams) => {
                             width={bgImageWidth}
                             height={bgImageHeight}
                         />}
-					<Html>
+					<Html divProps={{
+						style: { height: '100%' }
+					}}>
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
 								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
@@ -177,6 +199,7 @@ const Mountain = (params: MountainParams) => {
 							const m = MONSTERS[index]!
 							return (
 								<Monster
+									key={index}
 									dialogOpen={dialogOpen}
 									index={index}
 									onOpenChange={(state) => toggleDialog(index, state)}

@@ -6,8 +6,7 @@ export const PATHS = {
     QUESTION_4: '/challenges-and-obstacles',
     QUESTION_5: '/dedicate-time-weekly',
     CONFIRM: '/confirm',
-    QUEST: '/quest',
-    SELECT_PLAYER: '/select-player'
+    QUEST: '/quest'
 }
 
 export interface MonsterParams {

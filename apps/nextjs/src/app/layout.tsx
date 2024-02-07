@@ -31,18 +31,18 @@ export const metadata: Metadata = {
 			? "https://turbo.t3.gg"
 			: "http://localhost:3000",
 	),
-	title: "One Goal",
+	title: "Peak Quest",
 	description: "Simple monorepo with shared backend for web & mobile apps",
 	openGraph: {
-		title: "One Goal",
+		title: "Peak Quest",
 		description: "Simple monorepo with shared backend for web & mobile apps",
 		url: "https://create-t3-turbo.vercel.app",
-		siteName: "One Goal",
+		siteName: "Peak Quest",
 	},
 	twitter: {
 		card: "summary_large_image",
-		site: "@jullerino",
-		creator: "@jullerino",
+		site: "@chipz_oguibe",
+		creator: "@chipz_oguibe",
 	},
 };
 
