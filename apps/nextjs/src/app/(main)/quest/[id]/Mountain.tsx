@@ -1,27 +1,27 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { MONSTERS } from "~/app/utils";
+import React, { useEffect, useRef, useState } from 'react';
+import { MonsterParams, MONSTERS } from "~/app/utils";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
-import SelectPlayer from '~/components/SelectPlayer';
+import SelectPlayer, { characters } from '~/components/SelectPlayer';
 import { useAtom } from 'jotai'
 import { selectedCharacterAtom } from '~/app/lib/store';
-import { characters } from '~/components/SelectPlayer';
 import { tasks } from "@peakquest/db"
-import { Stage, Layer, Image } from 'react-konva';
+import { Image, Layer, Stage } from 'react-konva';
 import { Html } from "react-konva-utils";
 import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
-	DialogHeader, DialogTitle
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger
 } from "@peakquest/ui/dialog";
 import { Button } from "@peakquest/ui/button";
 import { useList } from 'react-use';
-import NextImage from 'next/image';
-
+import { animateScroll as scroll } from 'react-scroll';
+import Konva from 'konva';
 
 interface MountainParams {
 	questId: string
@@ -29,28 +29,80 @@ interface MountainParams {
 	tasks: typeof tasks.$inferSelect[]
 }
 
-
 const characterMap = new Map();
 
 characters.forEach((x) => {
 	characterMap.set(x.id, x)
 })
 
+function Monster(props: {
+	dialogOpen: any,
+	index: number,
+	onOpenChange: (state: boolean) => void,
+	m: MonsterParams
+	stageSize: { width: number; height: number },
+	bgImageHeight: number,
+	task: any
+}) {
+	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task } = props;
+	return (
+		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
+			<DialogTrigger asChild role="button">
+				<img
+					src={m.image}
+					style={{
+						width: `${130 - (index * 9)}px`,
+						transform: `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`,
+					}}
+				/>
+			</DialogTrigger>
+			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
+				<DialogHeader>
+					<div className="absolute right-4 top-4 w-40 h-40 z-0">
+						<img src={m.image} alt="Monster" style={{
+							width: "100%",
+							height: "100%"
+						}}/>
+					</div>
+					<DialogTitle className="text-2xl">Defeat {m.name}</DialogTitle>
+				</DialogHeader>
+				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
+					{index === 0 ? (
+						<>
+							<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
+							<p>{task.description}</p>
+						</>
+					) : (
+						<p>This task will be revealed once all previous tasks are complete</p>
+					)}
+				</div>
+				<DialogFooter className="justify-end mt-5">
+					<DialogClose asChild>
+						<Button
+							disabled={index !== 0}
+							type="button"
+							variant="secondary"
+							className="bg-button sm:px-10"
+						>
+							Done
+						</Button>
+					</DialogClose>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
+	);
+}
+
 const Mountain = (params: MountainParams) => {
 	const hasNotSelectedCharacter = params.characterId == null
 	const [showSelectCharacter, setShowSelectCharacter] = useState(hasNotSelectedCharacter)
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
-	const [monsterImages, { updateAt: setMonsterImage }] = useList<HTMLImageElement>(Array(12).fill(new window.Image()));
-	const [imagePositions, setImagePositions] = useState<Record<"x" | "y", number>[]>([]);
-	const [offsetWidths, setOffsetWidths] = useState<number[]>([]);
+	const [bgImageWidth, setBgImageWidth] = useState(0)
+	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
-	const [tooltipOpen, showTooltip] = useState<boolean>(false);
-
-	const characterSrc = selectedCharacter?.src
-	const characterWidth = selectedCharacter?.width
-	const characterHeight = selectedCharacter?.height
-
+	const divRef = useRef<HTMLDivElement>(null)
+	const stageRef = useRef<Konva.Stage>(null)
 	const [stageSize, setStageSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -60,187 +112,110 @@ const Mountain = (params: MountainParams) => {
 			width: window.innerWidth,
 			height: window.innerHeight,
 		});
-	};
-	const calculateImagePositions = () => {
-		// Calculate x and y positions based on the stageSize
-		const newImagePositions = monsterImages.map((image, index) => {
-			let offsetWidth = 650;
-			let midWidth = stageSize.width / 2;
-			let offsetHeight = 250;
-			let mountainTop = 200;
-			let posX = null;
-			let posY = stageSize.height - offsetHeight - (index * 55)
 
-			if (index % 2 === 0) {
-				let distanceFromCenter = Math.abs(posY - mountainTop)
-				posX = stageSize.width - offsetWidth - index * 20 - (index - Math.round(distanceFromCenter / 3));
-			} else {
-				posX = offsetWidth - 50 + (index * 15)
-			}
-			return ({
-				x: posX,
-				y: posY
-				/*x: (stageSize.width / (index + 2)) * (index + 1), // Example calculation, adjust as needed
-				y: (stageSize.height / (index + 2)) * (index + 1), // Example calculation, adjust as needed*/
-			});
-		});
-		setImagePositions(prevState => newImagePositions);
 	};
+	const characterSrc = selectedCharacter?.src
+	const characterWidth = selectedCharacter?.width
 
-	useEffect(() => {
-		calculateImagePositions();
-	}, [monsterImages, stageSize]);
+	const characterHeight = selectedCharacter?.height
+
+	const scrollToBottom = () => {
+		const div = divRef.current!;
+		const stage = stageRef.current;
+		// scroll.scrollToBottom({ containerId: div.id });
+		scroll.scrollToBottom({});
+		// stage.offsetY(bgImageHeight - window.innerHeight);
+	};
 
 	useEffect(() => {
 		if (!hasNotSelectedCharacter) {
 			setSelectedCharacter(characterMap.get(params.characterId))
 		}
 		const background = new window.Image();
+		// window.innerWidth < 480 ? background.src = '/images/mountain-quest-mobile.png' : background.src = '/images/mountain-quest.png';
 		background.src = '/images/mountain-quest.png';
-		background.onload = () => setBackgroundImage(background);
-		for (let i = 0; i < MONSTERS.length; i++) {
-			let image = new window.Image()
-			image.src = MONSTERS[i]!.image;
-			image.onload = () => setMonsterImage(i, image);
-		}
+		background.onload = () => {
+			setBackgroundImage(background)
+			setBgImageWidth(background.width)
+			setBgImageHeight(background.height)
+		};
 		window.addEventListener('resize', handleResize);
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [])
 
+	useEffect(() => {
+		divRef.current && setTimeout(scrollToBottom, 500)
+	}, [divRef.current])
+
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
-		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter} />
+		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
 	}
 
 	const tasks = params.tasks
 	return (
-		<>
-			<Stage width={stageSize.width} height={window.innerHeight}>
+		<div id="stage-wrapper" className='min-h-screen w-full overflow-y-scroll' ref={divRef}>
+			<Stage
+				width={stageSize.width}
+				height={bgImageHeight}
+				ref={stageRef}
+			>
 				<Layer>
 					{backgroundImage &&
-						<Image image={backgroundImage} width={stageSize.width} height={stageSize.height} />}
-					{tasks.slice(0, 10).map((task, index) => {
-						const monster = MONSTERS[index]!
-						const monsterImage = monsterImages[index]!
-						const monsterPosition = imagePositions[index]!
-
-						return monsterPosition && (
-							<>
-								<Image
-									image={monsterImage}
-									width={100 - (index * 7)}
-									height={100 - (index * 7)}
-									x={monsterPosition.x}
-									y={monsterPosition.y}
-									onClick={() => toggleDialog(index, !dialogOpen[index])}
-								/>
-								<Html>
-									<Dialog open={dialogOpen[index]}
-										onOpenChange={(state) => toggleDialog(index, state)}>
-										<DialogContent className="md:max-w-3xl">
-											<DialogHeader>
-												<div className="absolute right-4 top-4 w-40 h-40 z-0">
-													<img src={monsterImage.src} alt="Monster" style={{
-														width: "100%",
-														height: "100%"
-													}} />
-												</div>
-												<DialogTitle>Defeat {monster.name}</DialogTitle>
-											</DialogHeader>
-											<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4 lg:w-5/6">
-												{index === 0 ? (<>
-													<p id="task-name"
-														className="md:text-3xl font-semibold mb-4">{task.name}</p>
-													<p>{task.description}</p>
-												</>
-												) : <p>This task will be revealed once all previous tasks are
-													complete</p>
-												}
-											</div>
-											<DialogFooter className="justify-end">
-												<DialogClose asChild>
-													<Button disabled={index !== 0} type="button" variant="secondary"
-														className="bg-button sm:px-10">
-														Done
-													</Button>
-												</DialogClose>
-											</DialogFooter>
-										</DialogContent>
-									</Dialog>
-								</Html>
-							</>
-						)
-					})}
+                        <Image
+                            offsetX={bgImageWidth / 2}
+                            x={stageSize.width / 2}
+                            image={backgroundImage}
+                            width={bgImageWidth}
+                            height={bgImageHeight}
+                        />}
 					<Html divProps={{
-						style: {
-							position: 'absolute',
-							transform: 'translate(-50%, 320%)',
-							left: "43%"
-						}
+						style: { height: '100%' }
 					}}>
 						<TooltipProvider delayDuration={200}>
-							<Tooltip open={tooltipOpen} onOpenChange={(state) => showTooltip(state)}>
-								<TooltipTrigger onClick={() => setShowSelectCharacter(true)}>
+							<Tooltip>
+								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
+									transform: `translate(${(stageSize.width / 2) - 180}px, ${bgImageHeight - 180}px)`
+								}}>
 									<img
 										src={characterSrc as string}
 										alt="Character"
 										width={characterWidth}
 										height={characterHeight}
 										style={{
-											width: characterWidth as number / 3 ?? 100,
-											height: characterHeight as number,
+											width: characterWidth as number / 2,
+											height: characterHeight as number
 										}}
 									/>
 								</TooltipTrigger>
-								<TooltipContent>
+								<TooltipContent sideOffset={-30}>
 									<span>Change your Peak Quest Character</span>
-									<TooltipArrow />
+									<TooltipArrow/>
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
+						{tasks.map((task, index) => {
+							const m = MONSTERS[index]!
+							return (
+								<Monster
+									key={index}
+									dialogOpen={dialogOpen}
+									index={index}
+									onOpenChange={(state) => toggleDialog(index, state)}
+									m={m}
+									stageSize={stageSize}
+									bgImageHeight={bgImageHeight}
+									task={task}
+								/>
+							)
+						})}
 					</Html>
 				</Layer>
 			</Stage>
-		</>
-	)
-	/*return (
-		<div
-			className="h-screen relative bg-mountain-quest-mobile bg-cover md:bg-mountain-quest bg-[bottom_2rem_right_1rem] md:bg-center bg-no-repeat">
-			{tasks.map((task, index) => {
-				const monster = MONSTERS[index]
-
-				if (monster == undefined) return
-
-				return <Monster
-					taskName={task.name}
-					taskDescription={task.description}
-					key={index}
-					stepNum={index}
-					name={monster.name}
-					src={monster.image}
-					position={monster.position}
-					classNames={monster?.classNames}
-				/>
-			})}
-			<TooltipProvider delayDuration={200}>
-				<Tooltip>
-					<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
-						position: 'absolute',
-						width: characterWidth as number / 3 ?? 100,
-						top: "87%",
-						left: "43%"
-					}}>
-						<Image src={characterSrc as string} alt="Character" width={characterWidth} height={characterHeight} />
-					</TooltipTrigger>
-					<TooltipContent>
-						<span>Change your Peak Quest Character</span>
-						<TooltipArrow />
-					</TooltipContent>
-				</Tooltip>
-			</TooltipProvider>
 		</div>
-	);*/
+	)
+
 };
 
 export default Mountain;
