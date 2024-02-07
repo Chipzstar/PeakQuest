@@ -45,6 +45,17 @@ function Monster(props: {
 	task: any
 }) {
 	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task } = props;
+	const transform = `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`
+	const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+		const target = event.target as HTMLImageElement
+		target.style.transform = transform + 'scale(1.2)'; // Increase scale on mouse enter
+		target.style.transition = 'transform 0.3s ease'; // Apply transition animation
+	};
+
+	const handleMouseLeave = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+		const target = event.target as HTMLImageElement
+		target.style.transform = transform + 'scale(1)'; // Reset scale on mouse leave
+	};
 	return (
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild role="button">
@@ -52,8 +63,10 @@ function Monster(props: {
 					src={m.image}
 					style={{
 						width: `${130 - (index * 9)}px`,
-						transform: `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`,
+						transform,
 					}}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
 				/>
 			</DialogTrigger>
 			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
