@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MonsterParams, MONSTERS } from "~/app/utils";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
 import SelectPlayer, { characters } from '~/components/SelectPlayer';
-import { useAtom } from 'jotai'
+import { atom, useAtom } from 'jotai'
 import { selectedCharacterAtom } from '~/app/lib/store';
 import { tasks } from "@peakquest/db"
 import { Image, Layer, Stage } from 'react-konva';
@@ -22,11 +22,15 @@ import { Button } from "@peakquest/ui/button";
 import { useList } from 'react-use';
 import { animateScroll as scroll } from 'react-scroll';
 import Konva from 'konva';
+import { updateTask } from '~/actions/update-task';
+import type { PrimitiveAtom } from 'jotai';
+
+type Tasks = typeof tasks.$inferSelect[]
 
 interface MountainParams {
 	questId: string
 	characterId: number | null
-	tasks: typeof tasks.$inferSelect[]
+	tasks: Tasks
 }
 
 const characterMap = new Map();
@@ -43,8 +47,13 @@ function Monster(props: {
 	stageSize: { width: number; height: number },
 	bgImageHeight: number,
 	task: any
+	tasksAtom: PrimitiveAtom<Tasks>
+
 }) {
-	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task } = props;
+	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task, tasksAtom } = props;
+
+	const [tasks, setTasks] = useAtom(tasksAtom)
+
 	const transform = `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`
 	const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
 		const target = event.target as HTMLImageElement
@@ -56,6 +65,17 @@ function Monster(props: {
 		const target = event.target as HTMLImageElement
 		target.style.transform = transform + 'scale(1)'; // Reset scale on mouse leave
 	};
+
+	async function toggleDone(id: number, value: boolean) {
+		await updateTask(id, value)
+		const taskIndex = tasks.findIndex((x) => x.id == id)
+
+		tasks[taskIndex]!.isComplete = value
+
+		setTasks(tasks)
+	}
+
+
 	return (
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild role="button">
@@ -75,7 +95,7 @@ function Monster(props: {
 						<img src={m.image} alt="Monster" style={{
 							width: "100%",
 							height: "100%"
-						}}/>
+						}} />
 					</div>
 					<DialogTitle className="text-2xl">Defeat {m.name}</DialogTitle>
 				</DialogHeader>
@@ -92,12 +112,13 @@ function Monster(props: {
 				<DialogFooter className="justify-end mt-5">
 					<DialogClose asChild>
 						<Button
+							onClick={() => toggleDone(task.id, !task.isComplete)}
 							disabled={index !== 0}
 							type="button"
 							variant="secondary"
 							className="bg-button sm:px-10"
 						>
-							Done
+							{task.isComplete ? "Mark incomplete" : "Done"}
 						</Button>
 					</DialogClose>
 				</DialogFooter>
@@ -108,7 +129,10 @@ function Monster(props: {
 
 const Mountain = (params: MountainParams) => {
 	const hasNotSelectedCharacter = params.characterId == null
+	const tasksAtom = atom<Tasks>(params.tasks)
+
 	const [showSelectCharacter, setShowSelectCharacter] = useState(hasNotSelectedCharacter)
+	const [tasks] = useAtom(tasksAtom)
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
 	const [bgImageWidth, setBgImageWidth] = useState(0)
@@ -163,10 +187,9 @@ const Mountain = (params: MountainParams) => {
 	}, [divRef.current])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
-		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
+		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter} />
 	}
 
-	const tasks = params.tasks
 	return (
 		<div id="stage-wrapper" className='min-h-screen w-full overflow-y-scroll' ref={divRef}>
 			<Stage
@@ -176,13 +199,13 @@ const Mountain = (params: MountainParams) => {
 			>
 				<Layer>
 					{backgroundImage &&
-                        <Image
-                            offsetX={bgImageWidth / 2}
-                            x={stageSize.width / 2}
-                            image={backgroundImage}
-                            width={bgImageWidth}
-                            height={bgImageHeight}
-                        />}
+						<Image
+							offsetX={bgImageWidth / 2}
+							x={stageSize.width / 2}
+							image={backgroundImage}
+							width={bgImageWidth}
+							height={bgImageHeight}
+						/>}
 					<Html divProps={{
 						style: { height: '100%' }
 					}}>
@@ -204,7 +227,7 @@ const Mountain = (params: MountainParams) => {
 								</TooltipTrigger>
 								<TooltipContent sideOffset={-30}>
 									<span>Change your Peak Quest Character</span>
-									<TooltipArrow/>
+									<TooltipArrow />
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
@@ -220,6 +243,7 @@ const Mountain = (params: MountainParams) => {
 									stageSize={stageSize}
 									bgImageHeight={bgImageHeight}
 									task={task}
+									tasksAtom={tasksAtom}
 								/>
 							)
 						})}
