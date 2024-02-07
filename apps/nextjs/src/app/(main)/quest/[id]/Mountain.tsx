@@ -24,6 +24,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import Konva from 'konva';
 import { updateTask } from '~/actions/update-task';
 import type { PrimitiveAtom } from 'jotai';
+import { Minus, Plus } from 'lucide-react';
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -160,8 +161,8 @@ const Mountain = (params: MountainParams) => {
 
 		let newScale = scalingFactor + value
 
-		if (newScale < 1) {
-			newScale = 1
+		if (newScale < 0.75) {
+			newScale = 0.75
 		}
 
 		const stageWidth = stage.width();
@@ -182,7 +183,6 @@ const Mountain = (params: MountainParams) => {
 
 	const characterSrc = selectedCharacter?.src
 	const characterWidth = selectedCharacter?.width
-
 	const characterHeight = selectedCharacter?.height
 
 	const scrollToBottom = () => {
@@ -221,9 +221,13 @@ const Mountain = (params: MountainParams) => {
 
 	return (
 		<div id="stage-wrapper" className='min-h-screen w-full' ref={divRef}>
-			<div className='absolute top-0 z-50 flex flex-col'>
-				<button className='text-red-600 text-8xl' onClick={() => updateScale(0.25)}>Add</button>
-				<button className='text-red-600 text-8xl' onClick={() => updateScale(-0.25)}>Minus</button>
+			<div className='fixed top-4 right-4 z-50 flex space-x-2'>
+				<Button onClick={() => updateScale(0.25)} variant="outline" size="icon">
+					<Plus className="h-4 w-4" />
+				</Button>
+				<Button onClick={() => updateScale(-0.25)} variant="outline" size="icon">
+					<Minus className="h-4 w-4" />
+				</Button>
 			</div>
 			<Stage
 				draggable={true}
@@ -242,13 +246,14 @@ const Mountain = (params: MountainParams) => {
 							height={bgImageHeight}
 						/>}
 					<Html divProps={{
-						style: { height: '100%' }
+						style: { height: '100%'}
 					}}>
 
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
 								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
-									transform: `translate(${(stageSize.width / 2) - 180}px, ${bgImageHeight - 180}px)`
+									transform: `translate(${(stageSize.width / 2) - 180}px, ${bgImageHeight - 202}px)`,
+									objectFit: 'contain'
 								}}>
 									<img
 										src={characterSrc as string}
