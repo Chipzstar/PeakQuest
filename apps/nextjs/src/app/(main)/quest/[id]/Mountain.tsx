@@ -51,7 +51,6 @@ function Monster(props: {
 
 }) {
 	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task, tasksAtom } = props;
-
 	const [tasks, setTasks] = useAtom(tasksAtom)
 
 	const transform = `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`
@@ -75,6 +74,8 @@ function Monster(props: {
 		setTasks(tasks)
 	}
 
+	let prevTaskComplete = index > 0 ? !!tasks[index - 1]!.isComplete : true
+	let prevTaskIncomplete = !prevTaskComplete
 
 	return (
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
@@ -100,7 +101,7 @@ function Monster(props: {
 					<DialogTitle className="text-2xl">Defeat {m.name}</DialogTitle>
 				</DialogHeader>
 				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
-					{index === 0 ? (
+					{prevTaskComplete ? (
 						<>
 							<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
 							<p>{task.description}</p>
@@ -113,7 +114,7 @@ function Monster(props: {
 					<DialogClose asChild>
 						<Button
 							onClick={() => toggleDone(task.id, !task.isComplete)}
-							disabled={index !== 0}
+							disabled={prevTaskIncomplete}
 							type="button"
 							variant="secondary"
 							className="bg-button sm:px-10"

@@ -9,12 +9,12 @@ import OpenAI from 'openai';
 type Tasks = typeof tasks.$inferInsert[];
 
 const openai = new OpenAI({
-    apiKey: process.env['OPENAI_API_KEY']
+    apiKey: process.env.OPENAI_API_KEY
 });
 
 async function getUserId(email: string, name: string): Promise<string> {
     try {
-        let newId = uuidv4()
+        const newId = uuidv4()
 
         await db.insert(users).values({
             id: newId,
@@ -67,7 +67,6 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
     });
 
     const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
-    console.log(rawResponse)
 
     let parsedResponse: { task_name: string, task_description: string }[] | undefined;
     let isValid: boolean;
@@ -84,10 +83,7 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
     delete goalParams.name
     delete goalParams.email
 
-    let questId = uuidv4()
-    console.log("-----------------------------------------------")
-    console.log("Quest Id: " + questId)
-
+    const questId = uuidv4()
 
 
     await db.transaction(
