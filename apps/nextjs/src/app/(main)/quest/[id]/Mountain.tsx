@@ -137,6 +137,7 @@ const Mountain = (params: MountainParams) => {
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
 	const [bgImageWidth, setBgImageWidth] = useState(0)
+	const [scalingFactor, setScalingFactor] = useState(1)
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
 	const divRef = useRef<HTMLDivElement>(null)
@@ -152,6 +153,33 @@ const Mountain = (params: MountainParams) => {
 		});
 
 	};
+
+	const updateScale = (value: number) => {
+		const stage = stageRef.current;
+		if (stage == null) return;
+
+		let newScale = scalingFactor + value
+
+		if (newScale < 1) {
+			newScale = 1
+		}
+
+		const stageWidth = stage.width();
+		const stageHeight = stage.height();
+
+		const x = (stageWidth / 2 - stageWidth / 2 * newScale)
+		const y = (stageHeight / 2 - stageHeight / 2 * newScale)
+
+
+		stage.position({ x, y });
+		stage.scale({ x: newScale, y: newScale });
+		stage.batchDraw();
+
+		setScalingFactor(newScale)
+	}
+
+
+
 	const characterSrc = selectedCharacter?.src
 	const characterWidth = selectedCharacter?.width
 
@@ -192,8 +220,14 @@ const Mountain = (params: MountainParams) => {
 	}
 
 	return (
-		<div id="stage-wrapper" className='min-h-screen w-full overflow-y-scroll' ref={divRef}>
+		<div id="stage-wrapper" className='min-h-screen w-full' ref={divRef}>
+			<div className='absolute top-0 z-50 flex flex-col'>
+				<button className='text-red-600 text-8xl' onClick={() => updateScale(0.25)}>Add</button>
+				<button className='text-red-600 text-8xl' onClick={() => updateScale(-0.25)}>Minus</button>
+			</div>
 			<Stage
+				draggable={true}
+				scale={{ x: scalingFactor, y: scalingFactor }}
 				width={stageSize.width}
 				height={bgImageHeight}
 				ref={stageRef}
@@ -210,6 +244,7 @@ const Mountain = (params: MountainParams) => {
 					<Html divProps={{
 						style: { height: '100%' }
 					}}>
+
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
 								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
