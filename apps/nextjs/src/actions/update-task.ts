@@ -22,7 +22,7 @@ export async function setCurrentTask(questId: string) {
 				))
 			.orderBy(asc(tasks.id))
 
-		if (!tasksList[0]) return null;
+		if (!tasksList[0]) return 0;
 		const nextTask = tasksList[0]
 
 		// update the current task in the quest table

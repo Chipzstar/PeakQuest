@@ -73,7 +73,6 @@ function Monster(props: {
 		try {
 			await updateTask(id, value)
 			const index = await setCurrentTask(task.questId)
-			console.log("Index:", index)
 			if (index) {
 				setCharPosition(index)
 			}
