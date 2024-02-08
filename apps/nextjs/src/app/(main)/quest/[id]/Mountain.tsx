@@ -72,9 +72,10 @@ function Monster(props: {
 	async function toggleDone(id: number, value: boolean) {
 		try {
 			await updateTask(id, value)
-			const taskId = await setCurrentTask()
-			if (taskId) {
-				setCharPosition(taskId)
+			const index = await setCurrentTask(task.questId)
+			console.log("Index:", index)
+			if (index) {
+				setCharPosition(index)
 			}
 			const taskIndex = tasks.findIndex((x) => x.id == id)
 
@@ -159,7 +160,7 @@ const Mountain = (params: MountainParams) => {
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
 	const { charPosition, setCharPosition } = useCharacterPosition(params.currentTaskIndex)
 	const stageRef = useRef<Konva.Stage>(null)
-	const characterRef = useRef<HTMLButtonElement>(null)
+	const characterRef = useRef<HTMLImageElement>(null)
 	const [stageSize, setStageSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
@@ -227,7 +228,7 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
-	useEffect(() => {
+	/*useEffect(() => {
 		let stage = stageRef.current
 		if (stage) {
 			setTimeout(scrollToCharacter, 500)
@@ -236,7 +237,7 @@ const Mountain = (params: MountainParams) => {
 		return () => {
 			stage?.off('scaleXChange', scrollToCharacter);
 		};
-	}, [stageRef.current])
+	}, [stageRef.current])*/
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -275,11 +276,12 @@ const Mountain = (params: MountainParams) => {
 
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
-								<TooltipTrigger ref={characterRef} onClick={() => setShowSelectCharacter(true)} style={{
+								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
 									transform: `translate(${(stageSize.width / 2) - charPosition.x}px, ${bgImageHeight - charPosition.y}px)`,
 									objectFit: 'contain'
 								}}>
 									<img
+										ref={characterRef}
 										src={characterSrc as string}
 										alt="Character"
 										width={characterWidth}
