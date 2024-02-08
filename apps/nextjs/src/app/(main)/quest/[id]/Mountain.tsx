@@ -22,9 +22,11 @@ import { Button } from "@peakquest/ui/button";
 import { useList } from 'react-use';
 import { Events, animateScroll as scroll } from 'react-scroll';
 import Konva from 'konva';
-import { updateTask } from '~/actions/update-task';
+import { setCurrentTask, updateTask } from '~/actions/update-task';
 import type { PrimitiveAtom } from 'jotai';
 import { Minus, Plus } from 'lucide-react';
+import { toast } from "@peakquest/ui/toast";
+import { useCharacterPosition } from "~/app/hooks/useCharacterPosition";
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -32,6 +34,7 @@ interface MountainParams {
 	questId: string
 	characterId: number | null
 	tasks: Tasks
+	currentTaskIndex: number
 }
 
 const characterMap = new Map();
@@ -44,17 +47,17 @@ function Monster(props: {
 	dialogOpen: any,
 	index: number,
 	onOpenChange: (state: boolean) => void,
-	m: MonsterParams
+	monster: MonsterParams
 	stageSize: { width: number; height: number },
 	bgImageHeight: number,
 	task: any
 	tasksAtom: PrimitiveAtom<Tasks>
+	setCharPosition: (i: number) => void;
 
 }) {
-	const { dialogOpen, index, onOpenChange, m, stageSize, bgImageHeight, task, tasksAtom } = props;
+	const { dialogOpen, index, onOpenChange, monster, stageSize, bgImageHeight, task, tasksAtom, setCharPosition } = props;
 	const [tasks, setTasks] = useAtom(tasksAtom)
-
-	const transform = `translate(${(stageSize.width / 2) + m.position.x!}px, ${bgImageHeight - m.position.y!}px)`
+	const transform = `translate(${(stageSize.width / 2) + monster.position.x!}px, ${bgImageHeight - monster.position.y!}px)`
 	const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
 		const target = event.target as HTMLImageElement
 		target.style.transform = transform + 'scale(1.2)'; // Increase scale on mouse enter
@@ -67,12 +70,24 @@ function Monster(props: {
 	};
 
 	async function toggleDone(id: number, value: boolean) {
-		await updateTask(id, value)
-		const taskIndex = tasks.findIndex((x) => x.id == id)
+		try {
+			await updateTask(id, value)
+			const taskId = await setCurrentTask()
+			if (taskId) {
+				setCharPosition(taskId)
+			}
+			const taskIndex = tasks.findIndex((x) => x.id == id)
 
-		tasks[taskIndex]!.isComplete = value
+			tasks[taskIndex]!.isComplete = value
 
-		setTasks(tasks)
+			setTasks(tasks)
+		} catch (err: any) {
+			console.error(err)
+			toast('Failed to update task', {
+                description: err.message as string,
+                duration: 3000
+			})
+		}
 	}
 
 	let prevTaskComplete = index > 0 ? !!tasks[index - 1]!.isComplete : true
@@ -82,7 +97,7 @@ function Monster(props: {
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild role="button">
 				<img
-					src={task.isComplete ? "/images/flag.png" : m.image}
+					src={task.isComplete ? "/images/flag.png" : monster.image}
 					style={{
 						width: `${130 - (index * 9)}px`,
 						transform,
@@ -94,12 +109,12 @@ function Monster(props: {
 			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
 				<DialogHeader>
 					<div className="absolute right-4 top-4 w-40 h-40 z-0">
-						<img src={m.image} alt="Monster" style={{
+						<img src={monster.image} alt="Monster" style={{
 							width: "100%",
 							height: "100%"
-						}} />
+						}}/>
 					</div>
-					<DialogTitle className="text-2xl">Defeat {m.name}</DialogTitle>
+					<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
 				</DialogHeader>
 				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
 					{prevTaskComplete ? (
@@ -133,19 +148,23 @@ const Mountain = (params: MountainParams) => {
 	const mobileView = window.innerWidth <= 480;
 	const hasNotSelectedCharacter = params.characterId == null
 	const tasksAtom = atom<Tasks>(params.tasks)
-	const [showSelectCharacter, setShowSelectCharacter] = useState(hasNotSelectedCharacter)
+
 	const [tasks] = useAtom(tasksAtom)
+	const [showSelectCharacter, setShowSelectCharacter] = useState(hasNotSelectedCharacter)
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
 	const [bgImageWidth, setBgImageWidth] = useState(0)
 	const [scalingFactor, setScalingFactor] = useState({ x: mobileView ? 0.75 : 1, y: mobileView ? 0.75 : 1 })
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
+	const { charPosition, setCharPosition } = useCharacterPosition(params.currentTaskIndex)
 	const stageRef = useRef<Konva.Stage>(null)
+	const characterRef = useRef<HTMLButtonElement>(null)
 	const [stageSize, setStageSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+
 	const handleResize = () => {
 		setStageSize({
 			width: window.innerWidth,
@@ -182,16 +201,12 @@ const Mountain = (params: MountainParams) => {
 	const characterWidth = selectedCharacter?.width
 	const characterHeight = selectedCharacter?.height
 
-	const scrollToBottom = () => {
-		const stage = stageRef.current!;
-		// scroll.scrollToBottom({ containerId: div.id });
-		console.log("Bg image height: ", bgImageHeight)
-		console.log("Stage position", stage.getPosition().y)
+	const scrollToCharacter = () => {
+		const character = characterRef.current!;
 		// calculate new Y position to scroll to
-		let newY = bgImageHeight - stage.getPosition().y
-		console.table({ bgImageHeight, newStagePos: stage.getPosition().y, newY })
+		let newY = bgImageHeight - character.offsetTop
+		// console.table({ bgImageHeight, newStagePos: stage.getPosition().y, newY })
 		scroll.scrollTo(newY);
-		// stage.offsetY(bgImageHeight - window.innerHeight);
 	};
 
 	useEffect(() => {
@@ -215,26 +230,26 @@ const Mountain = (params: MountainParams) => {
 	useEffect(() => {
 		let stage = stageRef.current
 		if (stage) {
-			setTimeout(scrollToBottom, 500)
-			stage.on('scaleXChange', scrollToBottom);
+			setTimeout(scrollToCharacter, 500)
+			stage.on('scaleXChange', scrollToCharacter);
 		}
 		return () => {
-			stage?.off('scaleXChange', scrollToBottom);
+			stage?.off('scaleXChange', scrollToCharacter);
 		};
 	}, [stageRef.current])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
-		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter} />
+		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
 	}
 
 	return (
 		<div id="stage-wrapper" className='min-h-screen w-full'>
 			<div className='fixed top-4 right-4 z-50 flex space-x-2'>
 				<Button onClick={() => updateScale(0.25)} variant="outline" size="icon">
-					<Plus className="h-4 w-4" />
+					<Plus className="h-4 w-4"/>
 				</Button>
 				<Button onClick={() => updateScale(-0.25)} variant="outline" size="icon">
-					<Minus className="h-4 w-4" />
+					<Minus className="h-4 w-4"/>
 				</Button>
 			</div>
 			<Stage
@@ -247,21 +262,21 @@ const Mountain = (params: MountainParams) => {
 			>
 				<Layer>
 					{backgroundImage &&
-						<Image
-							offsetX={bgImageWidth / 2}
-							x={stageSize.width / 2}
-							image={backgroundImage}
-							width={bgImageWidth}
-							height={bgImageHeight}
-						/>}
+                        <Image
+                            offsetX={bgImageWidth / 2}
+                            x={stageSize.width / 2}
+                            image={backgroundImage}
+                            width={bgImageWidth}
+                            height={bgImageHeight}
+                        />}
 					<Html divProps={{
 						style: { height: '100%' }
 					}}>
 
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
-								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{
-									transform: `translate(${(stageSize.width / 2) - 180}px, ${bgImageHeight - 202}px)`,
+								<TooltipTrigger ref={characterRef} onClick={() => setShowSelectCharacter(true)} style={{
+									transform: `translate(${(stageSize.width / 2) - charPosition.x}px, ${bgImageHeight - charPosition.y}px)`,
 									objectFit: 'contain'
 								}}>
 									<img
@@ -277,7 +292,7 @@ const Mountain = (params: MountainParams) => {
 								</TooltipTrigger>
 								<TooltipContent sideOffset={-30}>
 									<span>Change your Peak Quest Character</span>
-									<TooltipArrow />
+									<TooltipArrow/>
 								</TooltipContent>
 							</Tooltip>
 						</TooltipProvider>
@@ -289,11 +304,12 @@ const Mountain = (params: MountainParams) => {
 									dialogOpen={dialogOpen}
 									index={index}
 									onOpenChange={(state) => toggleDialog(index, state)}
-									m={m}
+									monster={m}
 									stageSize={stageSize}
 									bgImageHeight={bgImageHeight}
 									task={task}
 									tasksAtom={tasksAtom}
+									setCharPosition={setCharPosition}
 								/>
 							)
 						})}

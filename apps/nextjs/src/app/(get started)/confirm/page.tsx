@@ -61,7 +61,6 @@ const Confirm = () => {
     // Callback version of watch.  It's your responsibility to unsubscribe when done.
     useEffect(() => {
         const subscription = form.watch((value, { name, type }) => {
-            console.log(value, name, type)
             window.localStorage.setItem('user', JSON.stringify(value));
         })
         return () => subscription.unsubscribe();
