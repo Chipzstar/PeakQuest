@@ -79,13 +79,13 @@ export const MONSTERS: MonsterParams[] = [
     },
     {
         name: 'Cragclaw',
-        image: '/images/monsters/Cragclaw.svg',
+        image: '/images/monsters/Cragclaw.png',
         position: { x: -20, y: 2030 },
         classNames: 'h-24 w-24'
     },
     {
         name: 'Whisperwing',
-        image: '/images/monsters/Whisperwing.svg',
+        image: '/images/monsters/Whisperwing.png',
         position: { x: -40, y: 2100 },
         classNames: 'h-20 w-20'
     },
