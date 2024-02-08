@@ -82,7 +82,7 @@ function Monster(props: {
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 			<DialogTrigger asChild role="button">
 				<img
-					src={m.image}
+					src={task.isComplete ? "/images/flag.png" : m.image}
 					style={{
 						width: `${130 - (index * 9)}px`,
 						transform,
@@ -138,7 +138,7 @@ const Mountain = (params: MountainParams) => {
 	const [selectedCharacter, setSelectedCharacter] = useAtom(selectedCharacterAtom)
 	const [backgroundImage, setBackgroundImage] = useState<HTMLImageElement | null>(null)
 	const [bgImageWidth, setBgImageWidth] = useState(0)
-	const [scalingFactor, setScalingFactor] = useState({x: mobileView ? 0.75 : 1, y: mobileView ? 0.75 : 1})
+	const [scalingFactor, setScalingFactor] = useState({ x: mobileView ? 0.75 : 1, y: mobileView ? 0.75 : 1 })
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
 	const stageRef = useRef<Konva.Stage>(null)
@@ -189,7 +189,7 @@ const Mountain = (params: MountainParams) => {
 		console.log("Stage position", stage.getPosition().y)
 		// calculate new Y position to scroll to
 		let newY = bgImageHeight - stage.getPosition().y
-		console.table({bgImageHeight, newStagePos: stage.getPosition().y, newY})
+		console.table({ bgImageHeight, newStagePos: stage.getPosition().y, newY })
 		scroll.scrollTo(newY);
 		// stage.offsetY(bgImageHeight - window.innerHeight);
 	};
@@ -255,7 +255,7 @@ const Mountain = (params: MountainParams) => {
 							height={bgImageHeight}
 						/>}
 					<Html divProps={{
-						style: { height: '100%'}
+						style: { height: '100%' }
 					}}>
 
 						<TooltipProvider delayDuration={200}>
