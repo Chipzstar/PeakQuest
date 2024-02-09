@@ -32,6 +32,8 @@ export const quest = sqliteTable("quest", {
 	createdBy: text("created_by").notNull(),
 	createdAt: text("created_at").default("sql`(CURRENT_TIMESTAMP)`"),
 	updatedAt: text("updated_at").default("sql`(CURRENT_TIMESTAMP)`"),
+	currentTask: integer("current_task").default(0).notNull(),
+	isComplete: integer("is_complete", { mode: "boolean" }).default(false),
 });
 
 export const user = sqliteTable("user", {
