@@ -24,8 +24,9 @@ export const quest = sqliteTable("quest", {
     .references(() => prompt.id),
   characterId: integer("character_id")
     .references(() => character.id),
-  createdBy: text("created_by").notNull(),
   currentTask: integer("current_task").notNull().default(0),
+  isComplete: integer("is_complete", { mode: "boolean" }).default(false),
+  createdBy: text("created_by").notNull(),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
 });

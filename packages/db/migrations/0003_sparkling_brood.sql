@@ -1,0 +1,1 @@
+ALTER TABLE quest ADD `is_complete` integer DEFAULT false;
