@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react';
-import { MonsterParams, MONSTERS } from "~/app/utils";
+import { MONSTERS } from "~/app/utils";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
 import SelectPlayer, { characters } from '~/components/SelectPlayer';
 import { atom, useAtom } from 'jotai'
@@ -9,24 +9,13 @@ import { selectedCharacterAtom } from '~/app/lib/store';
 import { tasks } from "@peakquest/db"
 import { Image, Layer, Stage } from 'react-konva';
 import { Html } from "react-konva-utils";
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger
-} from "@peakquest/ui/dialog";
 import { Button } from "@peakquest/ui/button";
 import { useList } from 'react-use';
-import { Events, animateScroll as scroll } from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 import Konva from 'konva';
-import { setCurrentTask, updateTask } from '~/actions/update-task';
-import type { PrimitiveAtom } from 'jotai';
 import { Minus, Plus } from 'lucide-react';
-import { toast } from "@peakquest/ui/toast";
-import { useCharacterPosition } from "~/app/hooks/useCharacterPosition";
+import { useCharacter } from "~/app/hooks/useCharacter";
+import { Monster } from "~/components/Monster";
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -43,107 +32,6 @@ characters.forEach((x) => {
 	characterMap.set(x.id, x)
 })
 
-function Monster(props: {
-	dialogOpen: any,
-	index: number,
-	onOpenChange: (state: boolean) => void,
-	monster: MonsterParams
-	stageSize: { width: number; height: number },
-	bgImageHeight: number,
-	task: any
-	tasksAtom: PrimitiveAtom<Tasks>
-	setCharPosition: (i: number) => void;
-
-}) {
-	const { dialogOpen, index, onOpenChange, monster, stageSize, bgImageHeight, task, tasksAtom, setCharPosition } = props;
-	const [tasks, setTasks] = useAtom(tasksAtom)
-	const transform = `translate(${(stageSize.width / 2) + monster.position.x!}px, ${bgImageHeight - monster.position.y!}px)`
-	const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-		const target = event.target as HTMLImageElement
-		target.style.transform = transform + 'scale(1.2)'; // Increase scale on mouse enter
-		target.style.transition = 'transform 0.3s ease'; // Apply transition animation
-	};
-
-	const handleMouseLeave = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
-		const target = event.target as HTMLImageElement
-		target.style.transform = transform + 'scale(1)'; // Reset scale on mouse leave
-	};
-
-	async function toggleDone(id: number, value: boolean) {
-		try {
-			await updateTask(id, value)
-			const index = await setCurrentTask(task.questId)
-			if (index) {
-				setCharPosition(index)
-			}
-			const taskIndex = tasks.findIndex((x) => x.id == id)
-
-			tasks[taskIndex]!.isComplete = value
-
-			setTasks(tasks)
-		} catch (err: any) {
-			console.error(err)
-			toast('Failed to update task', {
-                description: err.message as string,
-                duration: 3000
-			})
-		}
-	}
-
-	let prevTaskComplete = index > 0 ? !!tasks[index - 1]!.isComplete : true
-	let prevTaskIncomplete = !prevTaskComplete
-
-	return (
-		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
-			<DialogTrigger asChild role="button">
-				<img
-					src={task.isComplete ? "/images/flag.png" : monster.image}
-					style={{
-						width: `${130 - (index * 9)}px`,
-						transform,
-					}}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-				/>
-			</DialogTrigger>
-			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
-				<DialogHeader>
-					<div className="absolute right-4 top-4 w-40 h-40 z-0">
-						<img src={monster.image} alt="Monster" style={{
-							width: "100%",
-							height: "100%"
-						}}/>
-					</div>
-					<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
-				</DialogHeader>
-				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
-					{prevTaskComplete ? (
-						<>
-							<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
-							<p>{task.description}</p>
-						</>
-					) : (
-						<p>This task will be revealed once all previous tasks are complete</p>
-					)}
-				</div>
-				<DialogFooter className="justify-end mt-5">
-					<DialogClose asChild>
-						<Button
-							onClick={() => toggleDone(task.id, !task.isComplete)}
-							disabled={prevTaskIncomplete}
-							type="button"
-							variant="secondary"
-							className="bg-button sm:px-10"
-						>
-							{task.isComplete ? "Mark incomplete" : "Done"}
-						</Button>
-					</DialogClose>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
-	);
-}
-
 const Mountain = (params: MountainParams) => {
 	const mobileView = window.innerWidth <= 480;
 	const hasNotSelectedCharacter = params.characterId == null
@@ -157,7 +45,7 @@ const Mountain = (params: MountainParams) => {
 	const [scalingFactor, setScalingFactor] = useState({ x: mobileView ? 0.75 : 1, y: mobileView ? 0.75 : 1 })
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
-	const { charPosition, setCharPosition } = useCharacterPosition(params.currentTaskIndex)
+	const { charPosition, charScaleFactor, monsterYOffset, setCharPosition, currentStep } = useCharacter(params.currentTaskIndex)
 	const stageRef = useRef<Konva.Stage>(null)
 	const characterRef = useRef<HTMLImageElement>(null)
 	const [stageSize, setStageSize] = useState({
@@ -227,16 +115,17 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
+	// TODO - This listener seems to be making the site lag for some reason, not sure why
 	/*useEffect(() => {
 		let stage = stageRef.current
-		if (stage) {
+		if (stage and characterRef.current) {
 			setTimeout(scrollToCharacter, 500)
 			stage.on('scaleXChange', scrollToCharacter);
 		}
 		return () => {
 			stage?.off('scaleXChange', scrollToCharacter);
 		};
-	}, [stageRef.current])*/
+	}, [stageRef.current, characterRef.current])*/
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -286,12 +175,12 @@ const Mountain = (params: MountainParams) => {
 										width={characterWidth}
 										height={characterHeight}
 										style={{
-											width: characterWidth as number / 2,
-											height: characterHeight as number
+											width: characterWidth as number * charScaleFactor.width,
+											height: characterHeight as number * charScaleFactor.height
 										}}
 									/>
 								</TooltipTrigger>
-								<TooltipContent sideOffset={-30}>
+								<TooltipContent sideOffset={-30 + (currentStep * 2)}>
 									<span>Change your Peak Quest Character</span>
 									<TooltipArrow/>
 								</TooltipContent>
@@ -311,6 +200,7 @@ const Mountain = (params: MountainParams) => {
 									task={task}
 									tasksAtom={tasksAtom}
 									setCharPosition={setCharPosition}
+									offsetY={monsterYOffset}
 								/>
 							)
 						})}

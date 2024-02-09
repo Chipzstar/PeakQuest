@@ -1,72 +1,130 @@
-import React, { CSSProperties, FC, useMemo } from 'react';
+import { MonsterParams } from "~/app/utils";
+import React from "react";
+import { setCurrentTask, updateTask } from "~/actions/update-task";
+import { toast } from "@peakquest/ui/toast";
 import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger
 } from "@peakquest/ui/dialog";
 import { Button } from "@peakquest/ui/button";
-import { addMonths, format } from "date-fns";
-import { Image } from 'react-konva';
+import { PrimitiveAtom, useAtom } from "jotai";
+import { tasks } from "@peakquest/db";
 
-interface Props {
-	image: HTMLImageElement
-	src?: string;
-	name: string;
-	stepNum: number;
-	x: number;
-	y: number;
-	size?: {
-		width: number | string;
-		height: number | string;
+type Tasks = typeof tasks.$inferSelect[]
+
+export function Monster(props: {
+	dialogOpen: any,
+	index: number,
+	onOpenChange: (state: boolean) => void,
+	monster: MonsterParams
+	offsetY: number
+	stageSize: { width: number; height: number },
+	bgImageHeight: number,
+	task: any
+	tasksAtom: PrimitiveAtom<Tasks>
+	setCharPosition: (i: number) => void;
+}) {
+	const {
+		dialogOpen,
+		index,
+		onOpenChange,
+		monster,
+		offsetY,
+		stageSize,
+		bgImageHeight,
+		task,
+		tasksAtom,
+		setCharPosition
+	} = props;
+	const [tasks, setTasks] = useAtom(tasksAtom)
+	const transform = `translate(${(stageSize.width / 2) + monster.position.x!}px, ${bgImageHeight - monster.position.y! + offsetY}px)`
+	const width = index >= 9 ? `${130 - (index * 10)}px` : `${130 - (index * 9)}px`
+	const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+		const target = event.target as HTMLImageElement
+		target.style.transform = transform + 'scale(1.2)'; // Increase scale on mouse enter
+		target.style.transition = 'transform 0.3s ease'; // Apply transition animation
+	};
+
+	const handleMouseLeave = (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => {
+		const target = event.target as HTMLImageElement
+		target.style.transform = transform + 'scale(1)'; // Reset scale on mouse leave
+	};
+
+	async function toggleDone(id: number, value: boolean) {
+		try {
+			await updateTask(id, value)
+			const index = await setCurrentTask(task.questId)
+			setCharPosition(Number(index))
+
+			const taskIndex = tasks.findIndex((x) => x.id == id)
+
+			tasks[taskIndex]!.isComplete = value
+
+			setTasks(tasks)
+		} catch (err: any) {
+			console.error(err)
+			toast('Failed to update task', {
+				description: err.message as string,
+				duration: 3000
+			})
+		}
 	}
-	classNames?: string;
-	taskName: string;
-	taskDescription: string;
-	handleImageClick: () => void;
-}
 
-const Monster: FC<Props> = ({
-								image,
-								src,
-								name,
-								stepNum,
-								x,
-								y,
-								size = { width: 100, height: 100 },
-								classNames = "",
-								taskName,
-								taskDescription,
-								handleImageClick
-							}: Props) => {
-
-	/*const style: CSSProperties = {
-		position: 'absolute',
-		top: `${position.y}%`,
-		left: `${position.x}%`,
-		width: `${size.width}`,
-		height: `${size.height}`
-	};*/
-
-	const dueDate = useMemo(() => {
-		const nextDate = addMonths(new Date(), stepNum);
-		return format(nextDate, 'do MMM yy');
-	}, [stepNum])
+	let prevTaskComplete = index > 0 ? !!tasks[index - 1]!.isComplete : true
+	let prevTaskIncomplete = !prevTaskComplete
 
 	return (
-		<Image
-			image={image}
-			width={40}
-			height={40}
-			x={x}
-			y={y}
-			onClick={handleImageClick}
-		/>
+		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
+			<DialogTrigger asChild role="button">
+				<img
+					src={task.isComplete ? "/images/flag.png" : monster.image}
+					style={{
+						width,
+						transform,
+					}}
+					onMouseEnter={handleMouseEnter}
+					onMouseLeave={handleMouseLeave}
+				/>
+			</DialogTrigger>
+			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
+				<DialogHeader>
+					<div className="absolute right-4 top-4 w-40 h-40 z-0">
+						<img src={monster.image} alt="Monster" style={{
+							width: "100%",
+							height: "100%"
+						}}/>
+					</div>
+					<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
+				</DialogHeader>
+				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
+					{prevTaskComplete ? (
+						<>
+							<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
+							<p>{task.description}</p>
+						</>
+					) : (
+						<p>This task will be revealed once all previous tasks are complete</p>
+					)}
+				</div>
+				<DialogFooter className="justify-end mt-5">
+					<DialogClose asChild>
+						<Button
+							onClick={() => toggleDone(task.id, !task.isComplete)}
+							disabled={prevTaskIncomplete}
+							type="button"
+							variant="secondary"
+							className="bg-button sm:px-10"
+						>
+							{task.isComplete ? "Mark incomplete" : "Done"}
+						</Button>
+					</DialogClose>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
-};
-
-export default Monster;
+}

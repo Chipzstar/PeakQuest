@@ -1,3 +1,4 @@
+export const COMPLETE_INDEX = 12
 export const PATHS = {
     HOME: '/',
     QUESTION_1: '/what-is-your-one-goal',
@@ -40,7 +41,7 @@ export const MONSTERS: MonsterParams[] = [
     {
         name: 'Stormscale Draconith',
         image: '/images/monsters/Stormscale Draconith.png',
-        position: { x: -200, y: 1150 },
+        position: { x: -200, y: 1140 },
         classNames: 'h-20 w-20'
     },
     {
@@ -73,20 +74,20 @@ export const MONSTERS: MonsterParams[] = [
         position: { x: 2, y: 1840 },
     },
     {
-        name: 'Drakonirion Thunderwing',
-        image: '/images/monsters/Drakonirion Thunderwing.png',
-        position: { x: -50, y: 1950 },
-    },
-    {
         name: 'Cragclaw',
         image: '/images/monsters/Cragclaw.png',
-        position: { x: -20, y: 2030 },
+        position: { x: -55, y: 1940 },
+    },
+    {
+        name: 'Drakonirion Thunderwing',
+        image: '/images/monsters/Drakonirion Thunderwing.png',
+        position: { x: -15, y: 2015 },
         classNames: 'h-24 w-24'
     },
     {
         name: 'Whisperwing',
         image: '/images/monsters/Whisperwing.png',
-        position: { x: -40, y: 2100 },
+        position: { x: -37, y: 2065 },
         classNames: 'h-20 w-20'
     },
 ]
