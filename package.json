@@ -21,7 +21,8 @@
     "typecheck": "turbo typecheck",
     "vercel:dev": "dotenv -e .env -- vercel dev -p 3001",
     "vercel:build": "dotenv -e .env -- vercel build",
-    "dopper:sync-env": "doppler secrets download --no-file --format env > .env.doppler"
+    "dopper:sync-env:dev": "doppler secrets download --no-file --format env > .env.doppler",
+    "dopper:sync-env:prod": "doppler secrets -c prd download --no-file --format env > .env.doppler.prod"
   },
   "devDependencies": {
     "@peakquest/prettier-config": "workspace:^0.1.0",
