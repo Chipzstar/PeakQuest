@@ -4,7 +4,7 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
   webpack: (config) => {
-    config.externals = [...config.externals, { canvas: "canvas" }];  // required to make Konva & react-konva work
+    config.externals = [...config.externals, { canvas: "canvas" }]; // required to make Konva & react-konva work
     return config;
   },
   reactStrictMode: true,
@@ -15,14 +15,15 @@ const config = {
     "@peakquest/db",
     "@peakquest/ui",
     "@peakquest/validators",
+    "@peakquest/react-email",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   images: {
-    dangerouslyAllowSVG: true
-  }
+    dangerouslyAllowSVG: true,
+  },
 };
 
 export default config;

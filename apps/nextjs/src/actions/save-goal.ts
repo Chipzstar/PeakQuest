@@ -5,12 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { db, prompts, quest, users, tasks } from "@peakquest/db"
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
+import { Resend } from "resend";
+import { WelcomeEmail } from "@peakquest/react-email"
 
 type Tasks = typeof tasks.$inferInsert[];
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 async function getUserId(email: string, name: string): Promise<string> {
     try {
@@ -118,6 +123,13 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
         behavior: "deferred",
     }
     );
+
+    await resend.emails.send({
+        from: "peakquest@resend.dev",
+        to: data.email,
+        subject: "Your PeakQuest awaits",
+        react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
+    });
 
     return questId
 }
