@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { MONSTERS } from "~/app/utils";
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@peakquest/ui/tooltip";
 import SelectPlayer, { characters } from '~/components/SelectPlayer';
@@ -15,8 +15,9 @@ import Konva from 'konva';
 import { useCharacter } from "~/app/hooks/useCharacter";
 import { Monster } from "~/components/Monster";
 import ZoomControls from "~/components/ZoomControls";
-import confetti from "~/app/assets/animations/confetti.json";
+import fireworks from "~/app/assets/animations/fireworks.json";
 import Lottie from 'lottie-react';
+import QuestComplete from "~/components/QuestComplete";
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -25,6 +26,7 @@ interface MountainParams {
 	characterId: number | null
 	tasks: Tasks
 	currentTaskIndex: number
+	questCompleted: boolean
 }
 
 const characterMap = new Map();
@@ -59,6 +61,7 @@ const Mountain = (params: MountainParams) => {
 		width: window.innerWidth,
 		height: window.innerHeight,
 	});
+	const [completeModal, setCompleteModal] = useState<boolean>(params.questCompleted)
 
 	const handleResize = () => {
 		setStageSize({
@@ -91,18 +94,18 @@ const Mountain = (params: MountainParams) => {
 		setScalingFactor(newScale)
 	}
 
+	const scrollToCharacter = () => {
+		// const character = characterRef.current!;
+		// calculate new Y position to scroll to
+		let newY = bgImageHeight - charPosition.y
+		console.table({ bgImageHeight, newCharPos: charPosition.y,  newY })
+		scroll.scrollTo(newY);
+	};
 
 	const characterSrc = selectedCharacter?.src
 	const characterWidth = selectedCharacter?.width
-	const characterHeight = selectedCharacter?.height
 
-	const scrollToCharacter = () => {
-		const character = characterRef.current!;
-		// calculate new Y position to scroll to
-		let newY = bgImageHeight - character.offsetTop
-		// console.table({ bgImageHeight, newStagePos: stage.getPosition().y, newY })
-		scroll.scrollTo(newY);
-	};
+	const characterHeight = selectedCharacter?.height
 
 	useEffect(() => {
 		if (!hasNotSelectedCharacter) {
@@ -122,16 +125,23 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
-	/*useEffect(() => {
+	useEffect(() => {
 		let stage = stageRef.current
-		if (stage && characterRef.current) {
+		if (stage) {
 			setTimeout(scrollToCharacter, 500)
 			stage.on('scaleXChange', scrollToCharacter);
 		}
 		return () => {
 			stage?.off('scaleXChange', scrollToCharacter);
 		};
-	}, [stageRef.current, characterRef.current])*/
+	}, [stageRef.current])
+
+	const isComplete = useMemo(() => {
+		if (currentStep === 12) {
+			setCompleteModal(true)
+		}
+		return params.questCompleted || currentStep === 12
+	}, [currentStep, params.questCompleted])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -162,7 +172,15 @@ const Mountain = (params: MountainParams) => {
 					<Html divProps={{
 						style: { height: '100%' }
 					}}>
-
+						<QuestComplete open={!!stageRef.current && completeModal} onOpenChange={setCompleteModal}/>
+						<div style={{
+							position: 'absolute',
+							zIndex: 50,
+							transform: `translate(${stageSize.width / 2  - 85}px, ${bgImageHeight - charPosition.y - 50}px)`,
+							width: '120%'
+						}}>
+							{isComplete && <Lottie animationData={fireworks} loop />}
+						</div>
 						<TooltipProvider delayDuration={200}>
 							<Tooltip>
 								<TooltipTrigger onClick={() => setShowSelectCharacter(true)} style={{

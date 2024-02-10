@@ -92,11 +92,11 @@ export function Monster(props: {
 		<>
 			<div style={{
 				zIndex: 50,
-				width,
 				position: 'absolute',
+				width,
 				transform
 			}}>
-				{task.isComplete && <Lottie animationData={confetti} height={100} width={100}/>}
+				{task.isComplete && <Lottie animationData={confetti} loop={false}/>}
 			</div>
 			<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 				<DialogTrigger asChild role="button">

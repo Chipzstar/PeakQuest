@@ -32,6 +32,7 @@ const Quest = async ({ params }: { params: { id: string } }) => {
             characterId={questRecord.characterId}
             tasks={questRecord.tasks}
             currentTaskIndex={questRecord.currentTask}
+            questCompleted={!!questRecord.isComplete}
         />
     );
 };
