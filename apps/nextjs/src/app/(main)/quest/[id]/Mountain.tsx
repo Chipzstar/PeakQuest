@@ -8,14 +8,15 @@ import { atom, useAtom } from 'jotai'
 import { selectedCharacterAtom } from '~/app/lib/store';
 import { tasks } from "@peakquest/db"
 import { Image, Layer, Stage } from 'react-konva';
-import { Html } from "react-konva-utils";
-import { Button } from "@peakquest/ui/button";
+import { Html, Portal } from "react-konva-utils";
 import { useList } from 'react-use';
 import { animateScroll as scroll } from 'react-scroll';
 import Konva from 'konva';
-import { Minus, Plus } from 'lucide-react';
 import { useCharacter } from "~/app/hooks/useCharacter";
 import { Monster } from "~/components/Monster";
+import ZoomControls from "~/components/ZoomControls";
+import confetti from "~/app/assets/animations/confetti.json";
+import Lottie from 'lottie-react';
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -45,7 +46,13 @@ const Mountain = (params: MountainParams) => {
 	const [scalingFactor, setScalingFactor] = useState({ x: mobileView ? 0.75 : 1, y: mobileView ? 0.75 : 1 })
 	const [bgImageHeight, setBgImageHeight] = useState(0)
 	const [dialogOpen, { updateAt: toggleDialog }] = useList<boolean>(Array(12).fill(false));
-	const { charPosition, charScaleFactor, monsterYOffset, setCharPosition, currentStep } = useCharacter(params.currentTaskIndex)
+	const {
+		charPosition,
+		charScaleFactor,
+		monsterYOffset,
+		setCharPosition,
+		currentStep
+	} = useCharacter(params.currentTaskIndex)
 	const stageRef = useRef<Konva.Stage>(null)
 	const characterRef = useRef<HTMLImageElement>(null)
 	const [stageSize, setStageSize] = useState({
@@ -115,7 +122,7 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
-	useEffect(() => {
+	/*useEffect(() => {
 		let stage = stageRef.current
 		if (stage && characterRef.current) {
 			setTimeout(scrollToCharacter, 500)
@@ -124,7 +131,7 @@ const Mountain = (params: MountainParams) => {
 		return () => {
 			stage?.off('scaleXChange', scrollToCharacter);
 		};
-	}, [stageRef.current, characterRef.current])
+	}, [stageRef.current, characterRef.current])*/
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -132,16 +139,11 @@ const Mountain = (params: MountainParams) => {
 
 	return (
 		<div id="stage-wrapper" className='min-h-screen w-full'>
-			<div className='fixed top-4 right-4 z-50 flex space-x-2'>
-				<Button onClick={() => updateScale(0.25)} variant="outline" size="icon">
-					<Plus className="h-4 w-4"/>
-				</Button>
-				<Button onClick={() => updateScale(-0.25)} variant="outline" size="icon">
-					<Minus className="h-4 w-4"/>
-				</Button>
-			</div>
+			<ZoomControls
+				zoomIn={() => updateScale(0.25)}
+				zoomOut={() => updateScale(-0.25)}
+			/>
 			<Stage
-				id="stage"
 				draggable={true}
 				scale={{ x: scalingFactor.x, y: scalingFactor.y }}
 				width={stageSize.width}
@@ -205,6 +207,11 @@ const Mountain = (params: MountainParams) => {
 						})}
 					</Html>
 				</Layer>
+				{/*<Layer>
+					<Portal selector=".top">
+						<Lottie animationData={confetti} height={100} width={100}/>
+					</Portal>
+				</Layer>*/}
 			</Stage>
 		</div>
 	)

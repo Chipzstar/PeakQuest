@@ -14,6 +14,8 @@ import {
 import { Button } from "@peakquest/ui/button";
 import { PrimitiveAtom, useAtom } from "jotai";
 import { tasks } from "@peakquest/db";
+import Lottie from "lottie-react";
+import confetti from "~/app/assets/animations/confetti.json";
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -74,7 +76,6 @@ export function Monster(props: {
 			})
 		}
 	}
-
 	// If the current task is incomplete, check if the previous task is complete
 	// If the current task is complete, check if the next task is complete
 	// if either of the above are true, set the variable isDisabled to true
@@ -82,7 +83,7 @@ export function Monster(props: {
 	if (task.isComplete) {
 		currAndNextTaskComplete = tasks.length > index + 1 && !!tasks[index + 1]!.isComplete; // next task
 	} else {
-		currAndPrevTaskIncomplete = !(index > 0 && tasks[index - 1]!.isComplete); // previous task
+		currAndPrevTaskIncomplete = index > 0 ? !tasks[index - 1]!.isComplete : false; // previous task
 	}
 	isDisabled = currAndPrevTaskIncomplete || currAndNextTaskComplete;
 
