@@ -7,7 +7,7 @@ import SelectPlayer, { characters } from '~/components/SelectPlayer';
 import { atom, useAtom } from 'jotai'
 import { selectedCharacterAtom } from '~/app/lib/store';
 import { tasks } from "@peakquest/db"
-import { Image, Layer, Stage } from 'react-konva';
+import { Group, Image, Layer, Stage } from 'react-konva';
 import { Html, Portal } from "react-konva-utils";
 import { useList } from 'react-use';
 import { animateScroll as scroll } from 'react-scroll';
@@ -150,7 +150,7 @@ const Mountain = (params: MountainParams) => {
 				height={bgImageHeight}
 				ref={stageRef}
 			>
-				<Layer>
+				<Layer name="quest-stage">
 					{backgroundImage &&
                         <Image
                             offsetX={bgImageWidth / 2}
@@ -207,11 +207,6 @@ const Mountain = (params: MountainParams) => {
 						})}
 					</Html>
 				</Layer>
-				{/*<Layer>
-					<Portal selector=".top">
-						<Lottie animationData={confetti} height={100} width={100}/>
-					</Portal>
-				</Layer>*/}
 			</Stage>
 		</div>
 	)

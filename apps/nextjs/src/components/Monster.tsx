@@ -76,6 +76,7 @@ export function Monster(props: {
 			})
 		}
 	}
+
 	// If the current task is incomplete, check if the previous task is complete
 	// If the current task is complete, check if the next task is complete
 	// if either of the above are true, set the variable isDisabled to true
@@ -88,53 +89,63 @@ export function Monster(props: {
 	isDisabled = currAndPrevTaskIncomplete || currAndNextTaskComplete;
 
 	return (
-		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
-			<DialogTrigger asChild role="button">
-				<img
-					src={task.isComplete ? "/images/flag.png" : monster.image}
-					style={{
-						width,
-						transform,
-					}}
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-				/>
-			</DialogTrigger>
-			<DialogContent className="md:max-w-2xl lg:max-w-3xl">
-				<DialogHeader>
-					<div className="absolute right-4 top-4 w-40 h-40 z-0">
-						<img src={monster.image} alt="Monster" style={{
-							width: "100%",
-							height: "100%"
-						}}/>
+		<>
+			<div style={{
+				zIndex: 50,
+				width,
+				position: 'absolute',
+				transform
+			}}>
+				{task.isComplete && <Lottie animationData={confetti} height={100} width={100}/>}
+			</div>
+			<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
+				<DialogTrigger asChild role="button">
+					<img
+						src={task.isComplete ? "/images/flag.png" : monster.image}
+						style={{
+							width,
+							transform,
+						}}
+						onMouseEnter={handleMouseEnter}
+						onMouseLeave={handleMouseLeave}
+					/>
+				</DialogTrigger>
+				<DialogContent className="md:max-w-2xl lg:max-w-3xl">
+					<DialogHeader>
+						<div className="absolute right-4 top-4 w-40 h-40 z-0">
+							<img src={monster.image} alt="Monster" style={{
+								width: "100%",
+								height: "100%"
+							}}/>
+						</div>
+						<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
+					</DialogHeader>
+					<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
+						{currAndNextTaskComplete ?
+							<p>You already have a task ahead marked as complete. Mark that as incomplete first before
+								this one</p> : currAndPrevTaskIncomplete ?
+								<p>This task will be revealed once all previous tasks are complete</p> : (
+									<>
+										<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
+										<p>{task.description}</p>
+									</>
+								)}
 					</div>
-					<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
-				</DialogHeader>
-				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
-					{currAndNextTaskComplete ?
-						<p>You already have a task ahead marked as complete. Mark that as incomplete first before
-							this one</p> : currAndPrevTaskIncomplete ?
-							<p>This task will be revealed once all previous tasks are complete</p> : (
-								<>
-									<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
-									<p>{task.description}</p>
-								</>
-							)}
-				</div>
-				<DialogFooter className="justify-end mt-5">
-					<DialogClose asChild>
-						<Button
-							onClick={() => toggleDone(task.id, !task.isComplete)}
-							disabled={isDisabled}
-							type="button"
-							variant="secondary"
-							className="bg-button sm:px-10"
-						>
-							{task.isComplete ? "Mark incomplete" : "Done"}
-						</Button>
-					</DialogClose>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+					<DialogFooter className="justify-end mt-5">
+						<DialogClose asChild>
+							<Button
+								onClick={() => toggleDone(task.id, !task.isComplete)}
+								disabled={isDisabled}
+								type="button"
+								variant="secondary"
+								className="bg-button sm:px-10"
+							>
+								{task.isComplete ? "Mark incomplete" : "Done"}
+							</Button>
+						</DialogClose>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 }
