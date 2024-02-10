@@ -15,7 +15,7 @@ const config = {
     "@peakquest/db",
     "@peakquest/ui",
     "@peakquest/validators",
-    "@peakquest/react-email",
+    "@peakquest/email",
   ],
 
   /** We already do linting and typechecking as separate tasks in CI */

@@ -115,17 +115,16 @@ const Mountain = (params: MountainParams) => {
 		};
 	}, [])
 
-	// TODO - This listener seems to be making the site lag for some reason, not sure why
-	/*useEffect(() => {
+	useEffect(() => {
 		let stage = stageRef.current
-		if (stage and characterRef.current) {
+		if (stage && characterRef.current) {
 			setTimeout(scrollToCharacter, 500)
 			stage.on('scaleXChange', scrollToCharacter);
 		}
 		return () => {
 			stage?.off('scaleXChange', scrollToCharacter);
 		};
-	}, [stageRef.current, characterRef.current])*/
+	}, [stageRef.current, characterRef.current])
 
 	if (showSelectCharacter || (selectedCharacter == undefined)) {
 		return <SelectPlayer questId={params.questId} setShowCharacter={setShowSelectCharacter}/>
@@ -209,7 +208,6 @@ const Mountain = (params: MountainParams) => {
 			</Stage>
 		</div>
 	)
-
 };
 
 export default Mountain;

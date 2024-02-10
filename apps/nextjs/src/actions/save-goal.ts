@@ -6,7 +6,7 @@ import { db, prompts, quest, users, tasks } from "@peakquest/db"
 import { eq } from 'drizzle-orm';
 import OpenAI from 'openai';
 import { Resend } from "resend";
-import { WelcomeEmail } from "@peakquest/react-email"
+import { WelcomeEmail } from "@peakquest/email"
 
 type Tasks = typeof tasks.$inferInsert[];
 

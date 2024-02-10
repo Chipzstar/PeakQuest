@@ -75,8 +75,16 @@ export function Monster(props: {
 		}
 	}
 
-	let prevTaskComplete = index > 0 ? !!tasks[index - 1]!.isComplete : true
-	let prevTaskIncomplete = !prevTaskComplete
+	// If the current task is incomplete, check if the previous task is complete
+	// If the current task is complete, check if the next task is complete
+	// if either of the above are true, set the variable isDisabled to true
+	let isDisabled: boolean, currAndNextTaskComplete: boolean = false, currAndPrevTaskIncomplete: boolean = false;
+	if (task.isComplete) {
+		currAndNextTaskComplete = tasks.length > index + 1 && !!tasks[index + 1]!.isComplete; // next task
+	} else {
+		currAndPrevTaskIncomplete = !(index > 0 && tasks[index - 1]!.isComplete); // previous task
+	}
+	isDisabled = currAndPrevTaskIncomplete || currAndNextTaskComplete;
 
 	return (
 		<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
@@ -102,20 +110,21 @@ export function Monster(props: {
 					<DialogTitle className="text-2xl">Defeat {monster.name}</DialogTitle>
 				</DialogHeader>
 				<div className="flex flex-col justify-center space-x-2 py-8 z-10 w-3/4">
-					{prevTaskComplete ? (
-						<>
-							<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
-							<p>{task.description}</p>
-						</>
-					) : (
-						<p>This task will be revealed once all previous tasks are complete</p>
-					)}
+					{currAndNextTaskComplete ?
+						<p>You already have a task ahead marked as complete. Mark that as incomplete first before
+							this one</p> : currAndPrevTaskIncomplete ?
+							<p>This task will be revealed once all previous tasks are complete</p> : (
+								<>
+									<p id="task-name" className="md:text-3xl font-semibold mb-4">{task.name}</p>
+									<p>{task.description}</p>
+								</>
+							)}
 				</div>
 				<DialogFooter className="justify-end mt-5">
 					<DialogClose asChild>
 						<Button
 							onClick={() => toggleDone(task.id, !task.isComplete)}
-							disabled={prevTaskIncomplete}
+							disabled={isDisabled}
 							type="button"
 							variant="secondary"
 							className="bg-button sm:px-10"
