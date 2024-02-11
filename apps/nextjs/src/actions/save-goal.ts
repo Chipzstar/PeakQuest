@@ -68,7 +68,7 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
                 role: "system",
                 content: "You are a machine that only returns and replies with valid, iterable RFC8259 compliant JSON in your responses"
             }, { role: 'user', content: updatedPrompt }],
-            model: 'gpt-3.5-turbo-1106',
+            model: 'gpt-3.5-turbo-0125',
         });
         const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
 
@@ -118,8 +118,8 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
                     await tx.insert(tasks).values(newTasks)
                 }
             }, {
-                behavior: "deferred",
-            }
+            behavior: "deferred",
+        }
         );
 
         resend.emails.send({
