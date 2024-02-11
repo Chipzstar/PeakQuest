@@ -8,8 +8,7 @@ import OpenAI from 'openai';
 import { Resend } from "resend";
 import { WelcomeEmail } from "@peakquest/email"
 
-// Wrapper to retry async function 
-export function withRetryAndTimeout<T extends any[], R>(
+function withRetryAndTimeout<T extends any[], R>(
     asyncFunc: (...args: T) => Promise<R>,
     timeoutMs: number,
     maxRetries: number = 3
@@ -67,8 +66,12 @@ async function getUserId(email: string, name: string): Promise<string> {
     }
 }
 
-
 export async function saveGoal(data: GoalState & { name: string, email: string }): Promise<string> {
+    const retryFn = withRetryAndTimeout(saveGoal_INTERNAL, 15000, 2)
+    return retryFn(data)
+}
+
+export async function saveGoal_INTERNAL(data: GoalState & { name: string, email: string }): Promise<string> {
     // TODO: validate incoming data with zod
 
     const userId = await getUserId(data.email, data.name)
@@ -81,7 +84,8 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
         "GOAL_INPUT": data.oneGoal,
         "TIME_FRAME": data.timeline,
         "DAYS_AVAILABLE": data.daysPerWeekAvailable,
-        "CURRENT_LEVEL": data.currentLevel
+        "CURRENT_LEVEL": data.currentLevel,
+        "ANTICIPATED_CHALLENEGES": data.challengesFaced == "" ? "None" : data.challengesFaced
     }
 
     let updatedPrompt = rawPrompt
@@ -98,7 +102,7 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
             messages: [{
                 role: "system",
                 content: "You are a machine that only returns and replies with valid, iterable RFC8259 compliant JSON in your responses"
-            }, { role: 'user', content: updatedPrompt }],
+            }, { role: 'assistant', content: updatedPrompt }],
             model: 'gpt-3.5-turbo-0125',
         });
         const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
@@ -153,12 +157,12 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
         }
         );
 
-        resend.emails.send({
-            from: "peakquest@resend.dev",
-            to: data.email,
-            subject: "Your PeakQuest awaits",
-            react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
-        }).then(() => console.log("Email sent"));
+        // resend.emails.send({
+        //     from: "peakquest@resend.dev",
+        //     to: data.email,
+        //     subject: "Your PeakQuest awaits",
+        //     react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
+        // }).then(() => console.log("Email sent"));
 
         return questId;
     } catch (error) {
