@@ -15,7 +15,7 @@ import { Button } from "@peakquest/ui/button";
 import { PrimitiveAtom, useAtom } from "jotai";
 import { tasks } from "@peakquest/db";
 import Lottie from "lottie-react";
-import confetti from "~/app/assets/animations/confetti.json";
+import confettiNew from "~/app/assets/animations/confetti.json";
 
 type Tasks = typeof tasks.$inferSelect[]
 
@@ -77,7 +77,7 @@ export function Monster(props: {
 		}
 	}
 
-	// If the current task is incomplete, check if the previous task is complete
+	// If the current task is incomplete, check if the previous task is incomplete
 	// If the current task is complete, check if the next task is complete
 	// if either of the above are true, set the variable isDisabled to true
 	let isDisabled: boolean, currAndNextTaskComplete: boolean = false, currAndPrevTaskIncomplete: boolean = false;
@@ -90,13 +90,13 @@ export function Monster(props: {
 
 	return (
 		<>
-			<div style={{
+			<div className="rounded-full p-2" style={{
 				zIndex: 50,
 				position: 'absolute',
-				width,
-				transform
+				width: width + 10,
+				transform,
 			}}>
-				{task.isComplete && <Lottie animationData={confetti} loop={false}/>}
+				{task.isComplete && <Lottie animationData={confettiNew} loop={false}/>}
 			</div>
 			<Dialog open={dialogOpen[index]} onOpenChange={onOpenChange}>
 				<DialogTrigger asChild role="button">
