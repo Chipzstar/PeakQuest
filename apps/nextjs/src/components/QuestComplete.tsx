@@ -16,7 +16,7 @@ interface Props {
 const QuestComplete: FC<Props> = ({ open, onOpenChange }) => {
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent>
+			<DialogContent transition="data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out">
 				<DialogHeader>
 					<DialogTitle className="text-2xl">Congratulations 🎉</DialogTitle>
 					<DialogDescription className="leading-relaxed text-base">
