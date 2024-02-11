@@ -8,6 +8,37 @@ import OpenAI from 'openai';
 import { Resend } from "resend";
 import { WelcomeEmail } from "@peakquest/email"
 
+// Wrapper to retry async function 
+export function withRetryAndTimeout<T extends any[], R>(
+    asyncFunc: (...args: T) => Promise<R>,
+    timeoutMs: number,
+    maxRetries: number = 3
+): (...args: T) => Promise<R> {
+    let retries = 0;
+
+    function timeoutPromise(): Promise<R> {
+        return new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs));
+    }
+
+    async function attempt(...args: T): Promise<R> {
+        try {
+            return await Promise.race([asyncFunc(...args), timeoutPromise()]);
+        } catch (error) {
+            if (error instanceof Error && error.message === 'Timeout' && retries < maxRetries) {
+                console.log(`Attempt ${retries + 1} failed due to timeout, retrying...`);
+                retries++;
+                return attempt(...args);
+            } else {
+                throw error;
+            }
+        }
+    }
+
+    return attempt;
+}
+
+
+
 type Tasks = typeof tasks.$inferInsert[];
 
 const openai = new OpenAI({

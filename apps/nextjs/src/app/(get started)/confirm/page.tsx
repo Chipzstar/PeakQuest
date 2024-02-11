@@ -10,7 +10,7 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@peakquest/ui';
 import { GettingStartedFormSchema } from "@peakquest/validators";
 import type { UserFormData } from "~/app/utils/types";
-import { saveGoal } from '~/actions/save-goal';
+import { saveGoal, withRetryAndTimeout } from '~/actions/save-goal';
 import { useAtom } from 'jotai'
 import type { GoalState } from '~/app/lib/store';
 import { goalStateAtom } from '~/app/lib/store';
@@ -30,7 +30,8 @@ const Confirm = () => {
     async function onSubmit(data: UserFormData) {
         setLoading(true)
         try {
-            const id = await saveGoal({ ...goalState as GoalState, name: data.name, email: data.email })
+            let saveGoalWithRetry = withRetryAndTimeout(saveGoal, 5000, 2)
+            const id = await saveGoalWithRetry({ ...goalState as GoalState, name: data.name, email: data.email })
             setQuestId(id)
         } catch (err: any) {
             console.error(err)
