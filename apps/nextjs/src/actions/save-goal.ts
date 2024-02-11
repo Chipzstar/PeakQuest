@@ -62,74 +62,76 @@ export async function saveGoal(data: GoalState & { name: string, email: string }
         updatedPrompt = updatedPrompt.replace(key, val)
     })
 
-
-    const chatCompletion = await openai.chat.completions.create({
-        messages: [{
-            role: "system",
-            content: "You are a machine that only returns and replies with valid, iterable RFC8259 compliant JSON in your responses"
-        }, { role: 'user', content: updatedPrompt }],
-        model: 'gpt-3.5-turbo-1106',
-    });
-
-    const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
-
-    let parsedResponse: { task_name: string, task_description: string }[] | undefined;
-    let isValid: boolean;
     try {
-        parsedResponse = JSON.parse(rawResponse as string)
-        isValid = true;
-    } catch (error) {
-        console.log("could not parse openAI response");
-        isValid = false;
-    }
+        const chatCompletion = await openai.chat.completions.create({
+            messages: [{
+                role: "system",
+                content: "You are a machine that only returns and replies with valid, iterable RFC8259 compliant JSON in your responses"
+            }, { role: 'user', content: updatedPrompt }],
+            model: 'gpt-3.5-turbo-1106',
+        });
+        const rawResponse = chatCompletion.choices[0]?.message.content?.replace(/```json|```/g, "")
 
-    const goalParams = { ...data, name: undefined, email: undefined }
-    delete goalParams.oneGoal
-    delete goalParams.name
-    delete goalParams.email
+        let parsedResponse: { task_name: string, task_description: string }[] | undefined;
+        let isValid: boolean;
 
-    const questId = uuidv4()
+        try {
+            parsedResponse = JSON.parse(rawResponse as string)
+            isValid = true;
+        } catch (error) {
+            console.log("could not parse openAI response");
+            isValid = false;
+        }
+
+        const goalParams = { ...data, name: undefined, email: undefined }
+        delete goalParams.oneGoal
+        delete goalParams.name
+        delete goalParams.email
+
+        const questId = uuidv4()
 
 
-    await db.transaction(
-        async (tx) => {
-            await tx.insert(quest).values({
-                id: questId,
-                createdBy: userId,
-                goal: data.oneGoal as string,
-                goalParams: goalParams,
-                promptId: promptId,
-                isResponseValid: isValid,
-                rawOpenAIResponse: rawResponse,
-                openAIResponse: isValid ? rawResponse : null
-            })
-
-            if (isValid && parsedResponse !== undefined) {
-                const newTasks: Tasks = parsedResponse.map((x, index) => {
-                    return {
-                        questId,
-                        index,
-                        name: x.task_name,
-                        description: x.task_description,
-                        isComplete: false,
-                    }
+        await db.transaction(
+            async (tx) => {
+                await tx.insert(quest).values({
+                    id: questId,
+                    createdBy: userId,
+                    goal: data.oneGoal as string,
+                    goalParams: goalParams,
+                    promptId: promptId,
+                    isResponseValid: isValid,
+                    rawOpenAIResponse: rawResponse,
+                    openAIResponse: isValid ? rawResponse : null
                 })
 
-                await tx.insert(tasks).values(newTasks)
+                if (isValid && parsedResponse !== undefined) {
+                    const newTasks: Tasks = parsedResponse.map((x, index) => {
+                        return {
+                            questId,
+                            index,
+                            name: x.task_name,
+                            description: x.task_description,
+                            isComplete: false,
+                        }
+                    })
+
+                    await tx.insert(tasks).values(newTasks)
+                }
+            }, {
+                behavior: "deferred",
             }
+        );
 
+        resend.emails.send({
+            from: "peakquest@resend.dev",
+            to: data.email,
+            subject: "Your PeakQuest awaits",
+            react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
+        }).then(() => console.log("Email sent"));
 
-        }, {
-        behavior: "deferred",
+        return questId;
+    } catch (error) {
+        console.error("There was an error generating your tasks:", error)
+        throw error
     }
-    );
-
-    await resend.emails.send({
-        from: "peakquest@resend.dev",
-        to: data.email,
-        subject: "Your PeakQuest awaits",
-        react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
-    });
-
-    return questId
 }
