@@ -157,12 +157,12 @@ export async function saveGoal_INTERNAL(data: GoalState & { name: string, email:
         }
         );
 
-        // resend.emails.send({
-        //     from: "peakquest@resend.dev",
-        //     to: data.email,
-        //     subject: "Your PeakQuest awaits",
-        //     react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
-        // }).then(() => console.log("Email sent"));
+        resend.emails.send({
+            from: "notifications.peakquest.app",
+            to: data.email,
+            subject: "Your PeakQuest awaits",
+            react: WelcomeEmail({ name: data.name, quest: data.oneGoal, questId: questId })
+        }).then(() => console.log("Email sent"));
 
         return questId;
     } catch (error) {
