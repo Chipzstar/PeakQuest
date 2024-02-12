@@ -157,7 +157,7 @@ export async function saveGoal_INTERNAL(data: GoalState & { name: string, email:
         }
         );
 
-        if (process.env.NODE_ENV !== "development") {
+        if (process.env.NODE_ENV !== "development" || process.env.VERCEL_ENV === "production") {
             await resend.emails.send({
                 from: "notifications.peakquest.app",
                 to: data.email,
