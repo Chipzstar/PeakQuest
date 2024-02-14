@@ -34,7 +34,7 @@ export default function HomePage() {
 						<h1 className="text-3xl text-primary sm:text-7xl font-bold">
 							PeakQuest
 						</h1>
-						<span className="text-sm sm:text-lg top-0 relative font-light">Beta</span>
+						&nbsp;<span className="text-sm sm:text-lg top-0 relative font-light">Beta</span>
 					</div>
 					<p className="md:text-3xl text-secondary">Life is a marathon, not a sprint</p>
 				</div>

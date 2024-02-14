@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from "next";
 import localFont from 'next/font/local'
 import { Providers } from "./providers";
 import { cn } from "@peakquest/ui";
-import { ThemeProvider, ThemeToggle } from "@peakquest/ui/theme";
-import { Toaster } from "@peakquest/ui/toast";
 
 import { env } from "~/env";
 import { TRPCReactProvider } from "~/trpc/react";
