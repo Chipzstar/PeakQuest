@@ -1,11 +1,11 @@
 "use client"
 
 // import { api } from "~/trpc/server";
-import {Button} from "@peakquest/ui/button";
+import { Button } from "@peakquest/ui/button";
 import NextImage from "next/image";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
-import {PATHS} from "./utils";
+import { PATHS } from "./utils";
 import MythicalBeast1 from "./assets/images/questions/mythical-animal-1.png";
 import HeroImage from "./assets/images/hero.svg";
 
@@ -30,9 +30,12 @@ export default function HomePage() {
 					/>
 				</div>
 				<div className="flex flex-col space-y-4 md:space-y-8 text-center">
-					<h1 className="text-3xl text-primary sm:text-7xl font-bold">
-						PeakQuest
-					</h1>
+					<div className="flex justify-center">
+						<h1 className="text-3xl text-primary sm:text-7xl font-bold">
+							PeakQuest
+						</h1>
+						<span className="text-base top-0 relative font-light">Beta</span>
+					</div>
 					<p className="md:text-3xl text-secondary">Life is a marathon, not a sprint</p>
 				</div>
 				<Button size="lg" className="jumbo-button" onClick={() => router.push(PATHS.QUESTION_1)}>
