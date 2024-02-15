@@ -29,7 +29,7 @@ export const WelcomeEmail = ({
 								 questId,
 								 quest,
 							 }: WelcomeEmailProps) => {
-	const questLink = `https://peak-quest.vercel.app/quest/${questId}`
+	const questLink = `https://peakquest.app/quest/${questId}`
 	return (
 		<Html>
 			<Preview>A quest to improve your life</Preview>
