@@ -26,7 +26,7 @@ const LucidaGrande = localFont({
 export const metadata: Metadata = {
 	metadataBase: new URL(
 		env.VERCEL_ENV === "production"
-			? "https://turbo.t3.gg"
+			? "https://www.peakquest.app/"
 			: "http://localhost:3000",
 	),
 	title: "Peak Quest",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: "Peak Quest",
 		description: "Embark on success with PeakQuest: personalized goals, gamified adventures, and dedicated support. Start climbing now! 🏔️🚀",
-		url: "https://peakquest.app",
+		url: "https://www.peakquest.app",
 		siteName: "PeakQuest",
 	},
 	twitter: {
