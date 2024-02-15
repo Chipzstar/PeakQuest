@@ -30,12 +30,12 @@ export const metadata: Metadata = {
 			: "http://localhost:3000",
 	),
 	title: "Peak Quest",
-	description: "Simple monorepo with shared backend for web & mobile apps",
+	description: "Embark on success with PeakQuest: personalized goals, gamified adventures, and dedicated support. Start climbing now! 🏔️🚀",
 	openGraph: {
 		title: "Peak Quest",
-		description: "Simple monorepo with shared backend for web & mobile apps",
-		url: "https://create-t3-turbo.vercel.app",
-		siteName: "Peak Quest",
+		description: "Embark on success with PeakQuest: personalized goals, gamified adventures, and dedicated support. Start climbing now! 🏔️🚀",
+		url: "https://peakquest.app",
+		siteName: "PeakQuest",
 	},
 	twitter: {
 		card: "summary_large_image",
